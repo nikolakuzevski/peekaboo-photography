@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="mk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- ВАЖНО: ТРГНИ ГО ОВА ПРЕД ОБЈАВУВАЊЕ
+     Сајтот сѐ уште има XXX податоци и примери наместо вистински рецензии.
+     Ако Google го индексира сега, тие лажни податоци ќе излегуваат во
+     пребарување за вистински бизнис. Кога сајтот е готов, избриши го
+     редот со name="robots" подолу. -->
+<meta name="robots" content="noindex, nofollow">
+<title>За мене — Peek A&#39;Boo Photography</title>
+<meta name="description" content="Запознајте го фотографот зад Peek A&#39;Boo. Детска и семејна фотографија во Скопје, без брзање и без принудни пози.">
+<link rel="canonical" href="https://peekaboo.mk/za-mene.html">
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="mk_MK">
+<meta property="og:site_name" content="Peek A&#39;Boo Photography">
+<meta property="og:title" content="За мене — Peek A&#39;Boo Photography">
+<meta property="og:description" content="Запознајте го фотографот зад Peek A&#39;Boo. Детска и семејна фотографија во Скопје, без брзање и без принудни пози.">
+<meta property="og:image" content="images/logo.png">
+
+<link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#FBF7EE">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Nunito:wght@400;600;700&family=Unbounded:wght@600;700&display=swap">
+
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/pages.css">
+
+<script src="js/reveal.js"></script>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Оди на содржината</a>
+
+<!-- ══ ХЕДЕР ══════════════════════════════════════════════════════════════ -->
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a class="brand" href="index.html" aria-label="Peek A'Boo Photography — почетна">
+      <img src="images/logo.png" alt="Peek A&#39;Boo Photography" width="76" height="76">
+    </a>
+
+    <nav class="nav" aria-label="Главна навигација">
+      <a class="nav__link" href="index.html">Почетна</a>
+      <a class="nav__link" href="za-mene.html">За мене</a>
+      <a class="nav__link" href="portfolio.html">Портфолио</a>
+      <a class="nav__link" href="uslugi.html">Услуги</a>
+      <a class="nav__link" href="videa.html">Видеа</a>
+      <a class="nav__link" href="recenzii.html">Рецензии</a>
+      <a class="btn btn--primary btn--sm nav__cta" href="kontakt.html">Контакт</a>
+    </nav>
+
+    <button class="nav-toggle" type="button" data-drawer-toggle
+            aria-expanded="false" aria-controls="mobile-drawer">
+      <span class="nav-toggle__bars" aria-hidden="true"></span>
+      <span class="visually-hidden">Отвори мени</span>
+    </button>
+  </div>
+</header>
+
+<!-- ══ МОБИЛНО МЕНИ ═══════════════════════════════════════════════════════ -->
+<div class="drawer" id="mobile-drawer">
+  <div class="drawer__head">
+    <img src="images/logo.png" alt="" width="92" height="92" style="width:92px">
+    <button class="drawer__close" type="button" data-drawer-close>
+      <span aria-hidden="true">&times;</span>
+      <span class="visually-hidden">Затвори мени</span>
+    </button>
+  </div>
+  <nav class="drawer__nav" aria-label="Мени">
+    <a class="drawer__link" href="index.html">Почетна</a>
+    <a class="drawer__link" href="za-mene.html">За мене</a>
+    <a class="drawer__link" href="portfolio.html">Портфолио</a>
+    <a class="drawer__link" href="uslugi.html">Услуги</a>
+    <a class="drawer__link" href="videa.html">Видеа</a>
+    <a class="drawer__link" href="recenzii.html">Рецензии</a>
+    <a class="drawer__link" href="kontakt.html">Контакт</a>
+  </nav>
+  <div class="drawer__foot">
+    <a class="btn btn--coral" href="kontakt.html" style="width:100%">
+      Закажи термин <span class="btn__arrow" aria-hidden="true">&rarr;</span>
+    </a>
+  </div>
+</div>
+
+<main id="main">
+
+  <!-- ══ HERO — огромно име, портретот го преклопува ═════════════════════ -->
+  <section class="about-hero band" data-color="yellow">
+    <div class="container about-hero__stage">
+      <p class="eyebrow" data-reveal>За мене</p>
+
+      <h1 class="about-hero__name" data-about-name data-reveal>XXX</h1>
+
+      <div class="about-hero__portrait" data-about-portrait data-reveal></div>
+
+      <p class="about-hero__intro" data-about-intro data-reveal></p>
+    </div>
+  </section>
+
+  <!-- ══ ПРИКАЗНА — текст ═══════════════════════════════════════════════ -->
+  <section class="section">
+    <div class="container container--narrow">
+      <div class="stack" data-about-text data-reveal></div>
+
+      <div class="facts" data-about-facts data-reveal></div>
+    </div>
+  </section>
+
+  <!-- ══ НУМЕРИРАНИ ОБОЕНИ БЛОКОВИ ══════════════════════════════════════ -->
+  <section class="about-blocks-wrap">
+    <div class="about-blocks" data-about-blocks data-reveal-group></div>
+  </section>
+
+  <!-- ══ МРЕЖА СО СЛИКИ ═════════════════════════════════════════════════ -->
+  <section class="section">
+    <div class="container">
+      <div style="max-width:52ch;margin-bottom:var(--space-8)">
+        <p class="eyebrow" data-reveal>Зад сцената</p>
+        <h2 data-reveal>Каде и како работам</h2>
+      </div>
+      <div class="photo-grid" data-about-photos data-reveal-group></div>
+    </div>
+  </section>
+
+  <!-- ══ CTA ════════════════════════════════════════════════════════════ -->
+  <section class="section cta band" data-color="purple">
+    <div class="container cta__inner" data-reveal>
+      <p class="eyebrow">Ајде да почнеме</p>
+      <h2 class="cta__title">Кажете ми што сакате да зачуваме</h2>
+      <div class="cta__actions">
+        <a class="btn btn--onband" href="kontakt.html">
+          Контактирај ме <span class="btn__arrow" aria-hidden="true">&rarr;</span>
+        </a>
+        <a class="btn btn--outline" href="portfolio.html">Погледни портфолио</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div>
+        <img class="footer__logo" src="images/logo.png" alt="Peek A'Boo Photography"
+             width="130" height="130" loading="lazy">
+        <p style="margin-top:var(--space-4);max-width:34ch;opacity:.88">
+          Детска и семејна фотографија во Скопје. Крштевки, фотосесии и видео.
+        </p>
+        <div class="social" style="margin-top:var(--space-5)">
+          <a href="#" data-link="instagram-link" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/>
+              <circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/>
+            </svg>
+          </a>
+          <a href="#" data-link="facebook-link" target="_blank" rel="noopener" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M13.5 21v-8h2.7l.4-3.1h-3.1V7.9c0-.9.25-1.5 1.55-1.5H16.7V3.6c-.29-.04-1.28-.12-2.43-.12-2.4 0-4.05 1.47-4.05 4.17V9.9H7.5V13h2.72v8z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <p class="footer__title">Страници</p>
+        <div class="footer__list">
+          <a href="index.html">Почетна</a>
+          <a href="za-mene.html">За мене</a>
+          <a href="portfolio.html">Портфолио</a>
+          <a href="uslugi.html">Услуги</a>
+          <a href="videa.html">Видеа</a>
+          <a href="recenzii.html">Рецензии</a>
+          <a href="kontakt.html">Контакт</a>
+        </div>
+      </div>
+
+      <div>
+        <p class="footer__title">Контакт</p>
+        <div class="footer__list">
+          <a href="#" data-link="phone-link"><span data-slot="value">Телефон</span></a>
+          <a href="#" data-link="email-link"><span data-slot="value">Е-маил</span></a>
+          <a href="#" data-link="instagram-link" target="_blank" rel="noopener">
+            <span data-field="instagramHandle">Instagram</span>
+          </a>
+          <a href="#" data-link="maps-link" target="_blank" rel="noopener">
+            <span data-field="address">Локација</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <p style="margin:0">
+        &copy; <span data-field="year">2026</span> Peek A&#8217;Boo Photography
+      </p>
+      <p style="margin:0">Скопје, Северна Македонија</p>
+    </div>
+  </div>
+</footer>
+
+<script src="content/site-data.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/sections.js"></script>
+<script src="js/gallery.js"></script>
+<script src="js/videos.js"></script>
+<script src="js/reviews.js"></script>
+</body>
+</html>

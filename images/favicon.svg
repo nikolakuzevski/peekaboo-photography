@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Peek A'Boo Photography">
+  <rect width="64" height="64" rx="14" fill="#543A73"/>
+  <circle cx="32" cy="32" r="21" fill="#EAEB6B"/>
+  <circle cx="24.5" cy="28" r="3.4" fill="#2E2438"/>
+  <circle cx="39.5" cy="28" r="3.4" fill="#2E2438"/>
+  <path d="M23 38.5c2.6 3.6 5.6 5.4 9 5.4s6.4-1.8 9-5.4"
+        stroke="#2E2438" stroke-width="3.6" stroke-linecap="round" fill="none"/>
+  <circle cx="53" cy="13" r="5" fill="#E87153"/>
+  <circle cx="11" cy="51" r="4" fill="#4DC0BE"/>
+</svg>

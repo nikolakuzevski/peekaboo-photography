@@ -1,0 +1,611 @@
+/* =============================================================================
+   PAGES — секции специфични за страница
+   ============================================================================= */
+
+/* -----------------------------------------------------------------------------
+   HERO — split, color-blocked. Основата на почетната страница.
+   -------------------------------------------------------------------------- */
+.hero {
+  position: relative;
+  padding-block: clamp(var(--space-7), 5vw, var(--space-9)) 0;
+  overflow: hidden;
+}
+
+.hero__grid {
+  display: grid;
+  gap: var(--space-7);
+  align-items: center;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 900px) {
+  .hero__grid {
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(var(--space-6), 4vw, var(--space-8));
+    min-height: 78vh;
+  }
+}
+
+.hero__title {
+  font-size: var(--fs-hero);
+  line-height: var(--lh-tight);
+  margin-bottom: var(--space-3);
+}
+.hero__title em {
+  font-style: normal;
+  color: var(--text-coral);
+}
+
+.hero__lead { margin-top: var(--space-5); max-width: 44ch; }
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+}
+
+/* Десната половина: обоен блок што излегува од десниот раб на екранот */
+.hero__panel {
+  position: relative;
+  align-self: stretch;
+  display: grid;
+  place-items: center;
+  padding: clamp(var(--space-5), 4vw, var(--space-7));
+  background: var(--fill-coral);
+  border-radius: var(--r-xl);
+  min-height: 380px;
+}
+@media (min-width: 900px) {
+  .hero__panel {
+    /* Излегува сè до десниот раб на екранот, како кај инспирацијата.
+       Контејнерот е центриран и ограничен на --container, па мораме да го
+       поништиме и неговиот padding и половината од преостанатиот простор. */
+    margin-right: calc(-1 * max(var(--gutter), (100vw - var(--container)) / 2 + var(--gutter)));
+    border-radius: var(--r-xl) 0 0 var(--r-xl);
+    min-height: 620px;
+  }
+}
+
+.hero__figure {
+  width: min(100%, 440px);
+  aspect-ratio: 4 / 5;
+  border-radius: var(--r-arch);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+.hero__figure > * { width: 100%; height: 100%; }
+
+.hero__badge {
+  position: absolute;
+  right: clamp(-8px, 1vw, 8px);
+  bottom: clamp(-14px, -1vw, 0px);
+  color: var(--on-fill-dark);
+}
+@media (min-width: 900px) {
+  .hero__badge { right: auto; left: clamp(-24px, -2vw, -8px); bottom: clamp(16px, 4vw, 48px); }
+}
+.hero__badge-disc { fill: var(--fill-yellow); }
+
+/* -----------------------------------------------------------------------------
+   ЛЕНТА СО ВРЕДНОСТИ
+   -------------------------------------------------------------------------- */
+.values { padding-block: var(--space-6); }
+.values__grid {
+  display: grid;
+  gap: var(--space-5);
+  grid-template-columns: repeat(2, 1fr);
+}
+@media (min-width: 900px) { .values__grid { grid-template-columns: repeat(4, 1fr); } }
+
+.value {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  text-align: center;
+}
+@media (min-width: 900px) {
+  .value {
+    flex-direction: row;
+    align-items: center;
+    text-align: left;
+    gap: var(--space-3);
+  }
+  .value + .value { border-left: 1px solid rgba(46, 36, 56, 0.16); padding-left: var(--space-5); }
+}
+.value__icon {
+  flex-shrink: 0;
+  width: 40px; height: 40px;
+  color: var(--text-purple);
+}
+.value__label { font-weight: 700; font-size: var(--fs-small); line-height: 1.35; margin: 0; }
+
+/* -----------------------------------------------------------------------------
+   МРЕЖА ЗА УСЛУГИ
+   -------------------------------------------------------------------------- */
+.services__grid {
+  display: grid;
+  gap: var(--space-5);
+  grid-template-columns: 1fr;
+}
+@media (min-width: 700px)  { .services__grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1000px) { .services__grid { grid-template-columns: repeat(3, 1fr); } }
+
+/* Целосна страница со услуги — наизменични обоени секции */
+.service-block { padding-block: var(--section-y); }
+.service-block__grid {
+  display: grid;
+  gap: var(--space-7);
+  align-items: center;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 900px) {
+  .service-block__grid { grid-template-columns: 1fr 1fr; gap: var(--space-8); }
+  /* Секоја втора услуга ја менува страната — ритам, не монотонија */
+  .service-block:nth-of-type(even) .service-block__media { order: 2; }
+}
+
+.service-block__media { width: min(100%, 460px); }
+
+.checklist { display: flex; flex-direction: column; gap: var(--space-3); margin-top: var(--space-5); }
+.checklist li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  line-height: 1.5;
+}
+.checklist svg { flex-shrink: 0; width: 22px; height: 22px; margin-top: 2px; }
+
+/* -----------------------------------------------------------------------------
+   ГАЛЕРИЈА
+   Masonry преку CSS columns — без JS, без библиотека.
+   -------------------------------------------------------------------------- */
+.gallery {
+  columns: 1;
+  column-gap: var(--space-4);
+}
+@media (min-width: 620px)  { .gallery { columns: 2; } }
+@media (min-width: 1000px) { .gallery { columns: 3; } }
+
+.gallery__item {
+  break-inside: avoid;
+  margin-bottom: var(--space-4);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+
+/* Копчето е самата плочка — сликата се зумира, рамката стои мирно */
+.gallery__btn {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border-radius: inherit;
+  overflow: hidden;
+  position: relative;
+}
+.gallery__btn .frame { border-radius: inherit; }
+.gallery__btn:hover img { transform: scale(1.03); }
+
+.gallery__veil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(46, 36, 56, 0.42), transparent 55%);
+  opacity: 0;
+  transition: opacity var(--dur-base) var(--ease-out);
+}
+.gallery__btn:hover .gallery__veil,
+.gallery__btn:focus-visible .gallery__veil { opacity: 1; }
+
+/* Празна состојба — кога сè уште нема ниту една слика во една категорија */
+.empty-note {
+  grid-column: 1 / -1;
+  padding: var(--space-6);
+  border: 2px dashed var(--line-dashed);
+  border-radius: var(--r-lg);
+  text-align: center;
+  color: var(--ink-muted);
+}
+
+/* -----------------------------------------------------------------------------
+   SPLIT СЕКЦИЈА (За мене)
+   -------------------------------------------------------------------------- */
+.split {
+  display: grid;
+  gap: var(--space-7);
+  align-items: center;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 900px) {
+  .split { grid-template-columns: 0.85fr 1fr; gap: var(--space-8); }
+  .split--flip .split__media { order: 2; }
+}
+.split__media { position: relative; width: min(100%, 420px); justify-self: center; }
+
+.facts {
+  display: grid;
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.fact__label {
+  margin: 0 0 2px;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.65;
+}
+.fact__value { margin: 0; font-weight: 600; line-height: 1.35; }
+
+/* -----------------------------------------------------------------------------
+   ВИДЕА
+   -------------------------------------------------------------------------- */
+.videos__grid {
+  display: grid;
+  gap: var(--space-5);
+  grid-template-columns: 1fr;
+}
+@media (min-width: 760px) { .videos__grid { grid-template-columns: repeat(2, 1fr); } }
+
+/* Првото видео зазема цела ширина — фокус наместо рамномерна каша */
+@media (min-width: 760px) {
+  .videos__grid > :first-child { grid-column: 1 / -1; }
+}
+
+.video-card {
+  position: relative;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  background: var(--fill-cream-deep);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);
+}
+.video-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+
+.video-card__btn {
+  display: block;
+  width: 100%;
+  padding: 0;
+  position: relative;
+}
+.video-card__btn img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+
+.video-card__play {
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+  width: 68px; height: 68px;
+  border-radius: var(--r-pill);
+  background: var(--fill-purple);
+  color: #fff;
+  box-shadow: var(--shadow-md);
+  transition: transform var(--dur-base) var(--ease-out);
+}
+.video-card__btn:hover .video-card__play { transform: translate(-50%, -50%) scale(1.06); }
+.video-card__play svg { width: 24px; height: 24px; margin-left: 3px; }
+
+.video-card__title {
+  padding: var(--space-4) var(--space-5);
+  margin: 0;
+  font-weight: 700;
+}
+
+.video-card iframe,
+.video-card video { width: 100%; aspect-ratio: 16 / 9; height: auto; display: block; }
+
+/* -----------------------------------------------------------------------------
+   РЕЦЕНЗИИ
+   Grid на десктоп. Scroll-snap ред на мобилен. Без автоматска ротација.
+   -------------------------------------------------------------------------- */
+.reviews__grid {
+  display: grid;
+  gap: var(--space-4);
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(min(84vw, 320px), 1fr);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: var(--space-3);
+  /* Плочките не смеат да се лепат за рабовите при скрол */
+  scroll-padding-inline: var(--gutter);
+}
+.reviews__grid > * { scroll-snap-align: start; }
+
+@media (min-width: 900px) {
+  .reviews__grid {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(3, 1fr);
+    overflow: visible;
+    padding-bottom: 0;
+  }
+}
+
+/* -----------------------------------------------------------------------------
+   INSTAGRAM ЛЕНТА
+   -------------------------------------------------------------------------- */
+.ig {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  text-align: center;
+}
+.ig__handle {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  text-decoration: none;
+}
+
+/* -----------------------------------------------------------------------------
+   CTA БЕНД
+   -------------------------------------------------------------------------- */
+.cta {
+  position: relative;
+  text-align: center;
+  overflow: hidden;
+}
+.cta__inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-5);
+}
+.cta__title { max-width: 18ch; margin: 0; }
+.cta__actions { display: flex; flex-wrap: wrap; gap: var(--space-3); justify-content: center; }
+
+/* -----------------------------------------------------------------------------
+   КОНТАКТ
+   Без форма — само големи, директни копчиња.
+   -------------------------------------------------------------------------- */
+.contact__grid {
+  display: grid;
+  gap: var(--space-7);
+  grid-template-columns: 1fr;
+}
+@media (min-width: 900px) { .contact__grid { grid-template-columns: 1fr 1fr; gap: var(--space-8); } }
+
+.contact-methods {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: 1fr;
+}
+@media (min-width: 520px) { .contact-methods { grid-template-columns: repeat(2, 1fr); } }
+
+.method {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  min-height: 76px;
+  padding: var(--space-4) var(--space-5);
+  background: var(--tone-bg);
+  color: var(--tone-fg);
+  border-radius: var(--r-lg);
+  text-decoration: none;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);
+}
+.method:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.method__icon { flex-shrink: 0; width: 28px; height: 28px; }
+.method__label { display: block; font-size: 0.8125rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.7; }
+.method__value { display: block; font-weight: 700; line-height: 1.3; word-break: break-word; }
+
+.hours { display: flex; flex-direction: column; gap: var(--space-2); margin-top: var(--space-4); }
+.hours li {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--line);
+}
+.hours span:last-child { font-weight: 700; white-space: nowrap; }
+
+.map {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border: 0;
+  border-radius: var(--r-lg);
+  background: var(--fill-cream-deep);
+}
+
+/* -----------------------------------------------------------------------------
+   ЗАГЛАВИЕ НА ВНАТРЕШНА СТРАНИЦА
+   -------------------------------------------------------------------------- */
+.page-head {
+  position: relative;
+  padding-block: clamp(var(--space-7), 5vw, var(--space-8)) var(--space-7);
+  overflow: hidden;
+}
+.page-head__inner { position: relative; max-width: 62ch; }
+.page-head__title { margin-bottom: var(--space-3); }
+
+/* На многу тесни телефони контакт-картичките добиваат повеќе простор за текст,
+   за да не се крши телефонскиот број на средина. */
+@media (max-width: 380px) {
+  .method { padding-inline: var(--space-4); gap: var(--space-3); }
+  .method__value { font-size: var(--fs-small); }
+}
+
+/* =============================================================================
+   ПОРТФОЛИО ТИЗЕР — editorial распоред
+   -----------------------------------------------------------------------------
+   Порано ова беше мрежа од шест еднакви плочки и се читаше како каталог.
+   Една голема слика плус две помали до неа личи на портфолио: сликите добиваат
+   простор, а тоа е поуката од сите три референтни сајта.
+   ========================================================================== */
+.editorial {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: 1fr;
+}
+@media (min-width: 820px) {
+  .editorial {
+    grid-template-columns: 1.35fr 1fr;
+    grid-template-rows: repeat(2, 1fr);
+  }
+  /* Првата слика ја зазема целата лева колона преку двата реда. Мора да ја
+     поништиме нејзината aspect-ratio за да се растегне до висината на двете
+     десни слики наместо да си држи свој сопствен однос. */
+  .editorial > :first-child { grid-row: 1 / span 2; }
+  .editorial > :first-child > * { height: 100%; aspect-ratio: auto; }
+}
+
+/* =============================================================================
+   „ЗА МЕНЕ" — по инспирацијата (име, портрет што го преклопува, обоени блокови)
+   ========================================================================== */
+
+/* --- Hero: огромно име, портретот пред него ------------------------------ */
+.about-hero {
+  position: relative;
+  overflow: hidden;
+  padding-block: clamp(var(--space-7), 6vw, var(--space-9)) 0;
+  text-align: center;
+}
+
+.about-hero__stage {
+  position: relative;
+  display: grid;
+  justify-items: center;
+}
+
+.about-hero__name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(3rem, 1rem + 13vw, 11rem);
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  /* НЕ тврдо бело: бојата на текстот доаѓа спарена со бојата на бендот преку
+     data-color. Бело врз корална е 3.04:1 и паѓа; вака секоја боја е безбедна. */
+  color: inherit;
+  text-wrap: balance;
+}
+
+/* Портретот се качува врз името — потегот од инспирацијата.
+   Негативната горна маргина е тоа што го прави преклопувањето. */
+.about-hero__portrait {
+  position: relative;
+  width: min(100%, 420px);
+  margin-top: clamp(-3.5rem, -6vw, -1.5rem);
+}
+
+/* Исечена слика со проѕирна позадина: стои слободно, без рамка и без маска. */
+.about-hero__portrait--cutout img {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 18px 32px rgba(46, 36, 56, 0.22));
+}
+
+/* Обична правоаголна слика (или placeholder): добива лак-маска за да седи
+   намерно наместо да изгледа како залепена сликичка. */
+.about-hero__portrait--framed > * {
+  border-radius: var(--r-arch);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+
+.about-hero__intro {
+  max-width: 34ch;
+  margin: clamp(var(--space-5), 4vw, var(--space-7)) auto 0;
+  padding-bottom: var(--section-y);
+  font-size: clamp(1.15rem, 0.95rem + 1.1vw, 1.75rem);
+  line-height: 1.45;
+  color: inherit;
+}
+
+/* --- Двобојни блокови со нумерирани делови ------------------------------- */
+.about-blocks {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 860px) {
+  .about-blocks { grid-template-columns: 1fr 1fr; }
+}
+
+.about-block {
+  position: relative;
+  background: var(--tone-bg);
+  color: var(--tone-fg);
+  padding: clamp(var(--space-6), 5vw, var(--space-8));
+}
+
+.about-block__num {
+  display: block;
+  margin: 0 0 var(--space-4);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  opacity: 0.55;
+}
+.about-block__title { font-size: var(--fs-h3); margin-bottom: var(--space-3); }
+.about-block__text { margin: 0; opacity: 0.92; }
+
+/* Ротираниот вертикален збор од страна — „Resume" во инспирацијата. */
+/* Ротираниот вертикален збор — „Resume" во инспирацијата.
+   Живее ВНАТРЕ во првиот блок (го вметнува sections.js) за да ја наследи
+   бојата на текстот спарена со бојата на тој блок. Инаку може да испадне
+   темен текст врз темна подлога кога некој ќе ја смени бојата на блокот. */
+.about-rail {
+  display: none;
+  position: absolute;
+  left: clamp(12px, 2vw, 28px);
+  top: clamp(var(--space-6), 5vw, var(--space-8));
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  transform-origin: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2rem, 1rem + 3vw, 3.5rem);
+  letter-spacing: -0.02em;
+  color: inherit;
+  opacity: 0.6;
+  pointer-events: none;
+}
+@media (min-width: 1100px) {
+  .about-rail { display: block; }
+  /* Место за зборот, за да не се судри со текстот на блокот */
+  .about-blocks > :first-child { padding-left: calc(clamp(12px, 2vw, 28px) + 4.75rem); }
+}
+
+/* --- Мрежа 2×2 со натписи врз сликите ------------------------------------ */
+.photo-grid {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: 1fr;
+}
+@media (min-width: 700px) { .photo-grid { grid-template-columns: repeat(2, 1fr); } }
+
+.photo-grid__item {
+  position: relative;
+  border-radius: var(--r-md);
+  overflow: hidden;
+}
+.photo-grid__caption {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  padding: var(--space-6) var(--space-5) var(--space-4);
+  /* Градиентот гарантира читлив текст без разлика колку е светла сликата */
+  background: linear-gradient(to top, rgba(30, 22, 38, 0.78), transparent);
+  color: #FFFFFF;
+  font-weight: 700;
+  line-height: 1.3;
+}
+.photo-grid__caption span {
+  display: block;
+  font-weight: 400;
+  font-size: var(--fs-small);
+  opacity: 0.85;
+}
+
+/* Носач за нумерираните блокови — му треба позиција за ротираниот збор. */
+.about-blocks-wrap { position: relative; }
+
+/* Placeholder-от за портретот седи врз обоен бенд чија боја е променлива.
+   Кремово врз жолто се стопува, па тука е бело — бело се чита јасно врз
+   секоја од брендираните бои. */
+.about-hero__portrait .ph { --ph-bg: #FFFFFF; }

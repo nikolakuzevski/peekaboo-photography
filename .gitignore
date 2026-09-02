@@ -1,0 +1,14 @@
+# Слики од туѓи вебсајтови користени само како инспирација при дизајнот.
+# Тоа е работа на други дизајнери (Wash House, Frankie Ratford) — не се
+# објавува во јавно репо. Останува локално на дискот.
+website inspiration.jpg
+About me page.jpg
+
+# Изворни фајлови на логото — во сајтот се користи images/logo.png
+Peekaboo logo.webp
+Peekaboo logo - no background.png
+
+# OS
+Thumbs.db
+.DS_Store
+desktop.ini
