@@ -75,17 +75,6 @@
 }
 .hero__figure > * { width: 100%; height: 100%; }
 
-.hero__badge {
-  position: absolute;
-  right: clamp(-8px, 1vw, 8px);
-  bottom: clamp(-14px, -1vw, 0px);
-  color: var(--on-fill-dark);
-}
-@media (min-width: 900px) {
-  .hero__badge { right: auto; left: clamp(-24px, -2vw, -8px); bottom: clamp(16px, 4vw, 48px); }
-}
-.hero__badge-disc { fill: var(--fill-yellow); }
-
 /* -----------------------------------------------------------------------------
    ЛЕНТА СО ВРЕДНОСТИ
    -------------------------------------------------------------------------- */
@@ -609,3 +598,101 @@
    Кремово врз жолто се стопува, па тука е бело — бело се чита јасно врз
    секоја од брендираните бои. */
 .about-hero__portrait .ph { --ph-bg: #FFFFFF; }
+
+/* =============================================================================
+   СОВЕТИ
+   -----------------------------------------------------------------------------
+   Намерно мирна страница: тесна колона за читање, тенки линии наместо
+   картички, и една брендирана боја по совет како единствен акцент.
+   ========================================================================== */
+.tips { display: flex; flex-direction: column; }
+
+.tip { border-top: 1px solid var(--line); }
+.tip:last-child { border-bottom: 1px solid var(--line); }
+
+.tip__details { position: relative; }
+
+.tip__summary {
+  display: block;
+  padding: clamp(var(--space-5), 3vw, var(--space-7)) 0
+           clamp(var(--space-5), 3vw, var(--space-7))
+           clamp(var(--space-4), 2.5vw, var(--space-6));
+  cursor: pointer;
+  list-style: none;
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+/* Нативната стрелка на <summary> се тргнува — имаме своја */
+.tip__summary::-webkit-details-marker { display: none; }
+.tip__summary::marker { content: ''; }
+
+.tip__summary:hover { background: rgba(46, 36, 56, 0.025); }
+.tip__summary:focus-visible {
+  outline: 3px solid var(--text-purple);
+  outline-offset: -3px;
+  border-radius: var(--r-sm);
+}
+
+/* Вертикална линија во бојата на советот — единствениот обоен елемент */
+.tip__summary::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: clamp(var(--space-5), 3vw, var(--space-7));
+  width: 4px;
+  height: 2.25rem;
+  border-radius: 2px;
+  background: var(--tone-bg, var(--fill-purple));
+}
+
+.tip__meta {
+  display: block;
+  margin-bottom: var(--space-2);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+.tip__title {
+  margin: 0 0 var(--space-3);
+  font-size: var(--fs-h3);
+  font-weight: 700;
+}
+
+.tip__intro {
+  display: block;
+  max-width: 62ch;
+  color: var(--ink-muted);
+}
+
+.tip__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  margin-top: var(--space-3);
+  font-weight: 700;
+  font-size: var(--fs-small);
+  color: var(--text-purple);
+}
+.tip__chev {
+  width: 18px; height: 18px;
+  transition: transform var(--dur-base) var(--ease-out);
+}
+[open] .tip__chev { transform: rotate(180deg); }
+
+/* Текстот на копчето се менува според состојбата — без JavaScript.
+   Двата натписа се вистински текст, а не CSS `content`: display:none го вади
+   скриениот чисто од дрвото за пристапност, додека `content` од псевдо-елемент
+   читачите на екран го објавуваат нееднакво. */
+.tip__label--open { display: none; }
+[open] .tip__label--closed { display: none; }
+[open] .tip__label--open { display: inline; }
+
+.tip__body {
+  max-width: 62ch;
+  padding: 0 0 clamp(var(--space-5), 3vw, var(--space-7))
+           clamp(var(--space-4), 2.5vw, var(--space-6));
+}
+.tip__body p + p { margin-top: var(--space-4); }

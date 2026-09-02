@@ -290,36 +290,6 @@
 }
 
 /* -----------------------------------------------------------------------------
-   КРУЖНА ЗНАЧКА
-   Ротира врзано за скрол таму каде што е поддржано. Не е бескрајна ротација —
-   декоративни анимации што се вртат вечно го расејуваат вниманието.
-   -------------------------------------------------------------------------- */
-.badge {
-  width: clamp(104px, 14vw, 148px);
-  height: clamp(104px, 14vw, 148px);
-  flex-shrink: 0;
-}
-.badge__ring { transform-origin: 50% 50%; }
-.badge__text {
-  font-family: var(--font-accent);
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  fill: currentColor;
-}
-
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .badge__ring {
-      animation: badge-spin linear both;
-      animation-timeline: view();
-      animation-range: cover 0% cover 100%;
-    }
-  }
-}
-@keyframes badge-spin { from { rotate: -28deg; } to { rotate: 28deg; } }
-
-/* -----------------------------------------------------------------------------
    PLACEHOLDER ЗА СЛИКА
    Ова е причината зошто сајтот изгледа завршен иако сè уште нема фотографии.
    -------------------------------------------------------------------------- */

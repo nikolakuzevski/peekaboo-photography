@@ -214,7 +214,6 @@ button {
 
   /* Финална состојба, не почетна */
   .js-reveal [data-reveal] { opacity: 1 !important; transform: none !important; }
-  .hero__badge { animation: none !important; }
   .arch-reveal { clip-path: none !important; }
 
   @view-transition { navigation: none; }
