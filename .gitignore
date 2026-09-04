@@ -12,3 +12,7 @@ Peekaboo logo - no background.png
 Thumbs.db
 .DS_Store
 desktop.ini
+
+# Промпт за друг проект (Peek A'Boo Fund Manager) што случајно живее во оваа
+# папка — останува на дискот, но не влегува во репото на вебсајтот.
+REDESIGNPROMPT.md
