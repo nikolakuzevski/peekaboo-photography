@@ -21,6 +21,7 @@
     renderPortfolioTeaser(S);
     renderAbout(S);
     renderContact(S);
+    fitMarkedHeadings();
 
     // Новововметнатата содржина мора да се пријави за влезна анимација,
     // инаку останува засекогаш на opacity 0.
@@ -136,13 +137,13 @@
     var nameEl = document.querySelector('[data-about-name]');
     if (nameEl && a.name) {
       nameEl.textContent = a.name;
-      fitName(nameEl);
+      fitOneLine(nameEl, 28);
       // Имињата се со непозната должина, па по секоја промена на ширината
       // мора да се премери повторно.
       var t;
       window.addEventListener('resize', function () {
         clearTimeout(t);
-        t = setTimeout(function () { fitName(nameEl); }, 150);
+        t = setTimeout(function () { fitOneLine(nameEl, 28); }, 150);
       });
     }
 
@@ -179,6 +180,19 @@
       }).join('');
     }
 
+    /* Тизерот на почетната има свој, покус текст — не е истиот како на
+       страницата „За мене". */
+    var home = a.home || {};
+    var homeH = document.querySelector('[data-about-home-headline]');
+    if (homeH && home.headline) homeH.textContent = home.headline;
+
+    var homeT = document.querySelector('[data-about-home-text]');
+    if (homeT) {
+      homeT.innerHTML = (home.paragraphs || []).map(function (p) {
+        return '<p>' + window.PB.esc(p) + '</p>';
+      }).join('');
+    }
+
     // Нумерирани обоени блокови
     var blocks = document.querySelector('[data-about-blocks]');
     if (blocks) {
@@ -190,15 +204,6 @@
                  '<p class="about-block__text">' + window.PB.esc(b.text) + '</p>' +
                '</div>';
       }).join('');
-
-      /* Ротираниот збор оди ВНАТРЕ во првиот блок за да ја наследи неговата
-         боја на текст. Ако стоеше надвор, ќе беше темен текст без разлика
-         каква боја е блокот под него. */
-      var firstBlock = blocks.firstElementChild;
-      if (firstBlock) {
-        firstBlock.insertAdjacentHTML('afterbegin',
-          '<span class="about-rail" aria-hidden="true">ПРИКАЗНА</span>');
-      }
     }
 
     // Мрежа 2×2 со натписи врз сликите
@@ -230,20 +235,25 @@
   }
 
   /**
-   * Го смалува огромното име додека не собере во еден ред.
+   * Го смалува текстот додека не собере во ЕДЕН ред.
    *
-   * Името го внесува клиентот и може да биде „Ана" или „Александра" — CSS не
-   * може да измери текст, па која било фиксна clamp() вредност или ќе биде
-   * премала за кратко име или ќе прелева со долго. Затоа мериме вистински.
+   * Текстот го внесува клиентот и должината му се менува — CSS не може да
+   * измери текст, па која било фиксна clamp() вредност или ќе биде премала за
+   * краток наслов или ќе прелева со долг. Затоа мериме вистински.
+   *
+   * `minPx` е подот под кој не се симнува. Ако насловот е толку долг што ни
+   * на подот не собира, се остава да се прелее во повеќе редови — подобро
+   * отколку нечитливо ситен текст.
    */
-  function fitName(el) {
+  function fitOneLine(el, minPx) {
     if (!el || !el.textContent.trim()) return;
+    minPx = minPx || 28;
 
     el.style.whiteSpace = 'nowrap';
     el.style.fontSize = '';                       // врати ја вредноста од CSS
 
     // clientWidth го вклучува padding-от на контејнерот — ако мериме по него,
-    // името допира до самиот раб на екранот. Ни треба внатрешната ширина.
+    // текстот допира до самиот раб на екранот. Ни треба внатрешната ширина.
     var host = el.parentElement;
     var cs = getComputedStyle(host);
     var avail = host.clientWidth
@@ -256,10 +266,37 @@
 
     // Чувар од бесконечен циклус ако мерењето врати нула
     var guard = 0;
-    while (el.scrollWidth > avail && size > 28 && guard++ < 80) {
+    while (el.scrollWidth > avail && size > minPx && guard++ < 80) {
       size -= Math.max(1, size * 0.04);
       el.style.fontSize = size + 'px';
     }
+
+    // Сè уште не собира ни на подот — пушти го да се прелее нормално.
+    if (el.scrollWidth > avail) {
+      el.style.whiteSpace = '';
+      el.style.fontSize = '';
+    }
+  }
+
+  /* Наслови означени со data-fit-line во HTML треба да стојат во еден ред. */
+  function fitMarkedHeadings() {
+    var els = document.querySelectorAll('[data-fit-line]');
+    if (!els.length) return;
+
+    function run() {
+      Array.prototype.forEach.call(els, function (el) {
+        fitOneLine(el, parseFloat(el.getAttribute('data-fit-line')) || 24);
+      });
+    }
+    run();
+
+    var t;
+    window.addEventListener('resize', function () {
+      clearTimeout(t);
+      t = setTimeout(run, 150);
+    });
+    // Фонтот се вчитува подоцна и ги менува ширините — премери кога ќе слета.
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(run);
   }
 
   /* ---------------------------------------------------------------------------

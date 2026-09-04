@@ -117,7 +117,7 @@
    -------------------------------------------------------------------------- */
 .services__grid {
   display: grid;
-  gap: var(--space-5);
+  gap: clamp(var(--space-5), 2.5vw, var(--space-7));
   grid-template-columns: 1fr;
 }
 @media (min-width: 700px)  { .services__grid { grid-template-columns: repeat(2, 1fr); } }
@@ -220,14 +220,12 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 .fact__label {
-  margin: 0 0 2px;
-  font-size: 0.8125rem;
+  margin: 0 0 var(--space-1);
+  font-size: var(--fs-body);
   font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  opacity: 0.65;
+  line-height: 1.35;
 }
-.fact__value { margin: 0; font-weight: 600; line-height: 1.35; }
+.fact__value { margin: 0; font-weight: 400; line-height: 1.35; color: var(--ink-muted); }
 
 /* -----------------------------------------------------------------------------
    ВИДЕА
@@ -255,7 +253,7 @@
 }
 /* Три вертикални видеа една до друга би биле премногу високи на широк екран */
 @media (min-width: 620px) {
-  .videos__grid--vertical { max-width: 760px; margin-inline: auto; }
+  .videos__grid--vertical { max-width: 940px; margin-inline: auto; gap: clamp(var(--space-5), 3vw, var(--space-7)); }
 }
 
 .video-card {
@@ -426,7 +424,8 @@
   padding-block: clamp(var(--space-7), 5vw, var(--space-8)) var(--space-7);
   overflow: hidden;
 }
-.page-head__inner { position: relative; max-width: 62ch; }
+.page-head__inner { position: relative; }
+.page-head__inner .lead { max-width: 62ch; }
 .page-head__title { margin-bottom: var(--space-3); }
 
 /* На многу тесни телефони контакт-картичките добиваат повеќе простор за текст,
@@ -552,32 +551,6 @@
 .about-block__text { margin: 0; opacity: 0.92; }
 
 /* Ротираниот вертикален збор од страна — „Resume" во инспирацијата. */
-/* Ротираниот вертикален збор — „Resume" во инспирацијата.
-   Живее ВНАТРЕ во првиот блок (го вметнува sections.js) за да ја наследи
-   бојата на текстот спарена со бојата на тој блок. Инаку може да испадне
-   темен текст врз темна подлога кога некој ќе ја смени бојата на блокот. */
-.about-rail {
-  display: none;
-  position: absolute;
-  left: clamp(12px, 2vw, 28px);
-  top: clamp(var(--space-6), 5vw, var(--space-8));
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
-  transform-origin: center;
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: clamp(2rem, 1rem + 3vw, 3.5rem);
-  letter-spacing: -0.02em;
-  color: inherit;
-  opacity: 0.6;
-  pointer-events: none;
-}
-@media (min-width: 1100px) {
-  .about-rail { display: block; }
-  /* Место за зборот, за да не се судри со текстот на блокот */
-  .about-blocks > :first-child { padding-left: calc(clamp(12px, 2vw, 28px) + 4.75rem); }
-}
-
 /* --- Мрежа 2×2 со натписи врз сликите ------------------------------------ */
 .photo-grid {
   display: grid;
@@ -713,3 +686,20 @@
            clamp(var(--space-4), 2.5vw, var(--space-6));
 }
 .tip__body p + p { margin-top: var(--space-4); }
+
+/* =============================================================================
+   ЗАГЛАВИЕ НА СЕКЦИЈА
+   -----------------------------------------------------------------------------
+   Без ограничување на ширина, за да паднат насловите во еден ред на десктоп.
+   На потесен екран сами се прелеваат — не се форсира nowrap, бидејќи тоа би
+   предизвикало прелевање настрана.
+   ========================================================================== */
+.section-head { margin-bottom: var(--space-8); }
+.section-head .lead { max-width: 62ch; }
+
+/* Пониска секција — за лентата со Instagram, каде што има само три реда текст */
+.section--tight { padding-block: clamp(var(--space-6), 3.5vw, var(--space-8)); }
+
+/* CTA насловот и текстот во по еден ред на широк екран */
+.cta__title { max-width: none; }
+.cta .lead { max-width: none; }
