@@ -17,6 +17,11 @@
 
     var list = (window.SITE && window.SITE.videos) || [];
 
+    /* Односот на страни доаѓа од HTML-от: хоризонтално 16/9 е default, а
+       вертикално 9/16 е за Reels-формат. Плочката и вистинскиот плеер го
+       делат истиот однос, па ништо не се поместува кога видеото ќе слета. */
+    var ratio = wrap.getAttribute("data-ratio") || "16 / 9";
+
     if (!list.length) {
       var count = parseInt(wrap.getAttribute('data-placeholder-count'), 10) || 3;
       var html = '';
@@ -24,7 +29,7 @@
         html += '<div class="video-card" data-reveal>' +
                   window.PB.placeholder({
                     tone: "cream",
-                    ratio: "16 / 9",
+                    ratio: ratio,
                     label: "Видео доаѓа наскоро"
                   }) +
                 '</div>';
@@ -36,7 +41,7 @@
 
     wrap.innerHTML = list.map(function (v, i) {
       return '<div class="video-card" data-reveal data-video-index="' + i + '">' +
-               card(v, i) +
+               card(v, ratio) +
              '</div>';
     }).join("");
 
@@ -55,14 +60,14 @@
   }
 
   /* Постер + копче за пуштање. Ништо од трети страни не се вчитува уште. */
-  function card(v, i) {
+  function card(v, ratio) {
     var title = window.PB.esc(v.title || 'Видео');
     var poster = v.poster ||
       (v.type === 'youtube' && v.id ? 'https://i.ytimg.com/vi/' + v.id + '/hqdefault.jpg' : '');
 
     var media = poster
       ? '<img src="' + window.PB.esc(poster) + '" alt="" loading="lazy" decoding="async">'
-      : window.PB.placeholder({ tone: "cream", ratio: "16 / 9", label: v.title || "Видео" });
+      : window.PB.placeholder({ tone: "cream", ratio: ratio, label: v.title || "Видео" });
 
     return '<button class="video-card__btn" type="button" data-play ' +
              'aria-label="Пушти го видеото: ' + title + '">' +

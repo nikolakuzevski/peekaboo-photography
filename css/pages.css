@@ -7,7 +7,9 @@
    -------------------------------------------------------------------------- */
 .hero {
   position: relative;
-  padding-block: clamp(var(--space-7), 5vw, var(--space-9)) 0;
+  /* Долниот простор ја одвојува лавандата лента од коралниот панел —
+     без него двете обоени површини се допираат и се читаат како една. */
+  padding-block: clamp(var(--space-7), 5vw, var(--space-9)) clamp(var(--space-7), 5vw, var(--space-8));
   overflow: hidden;
 }
 
@@ -34,8 +36,6 @@
   font-style: normal;
   color: var(--text-coral);
 }
-
-.hero__lead { margin-top: var(--space-5); max-width: 44ch; }
 
 .hero__actions {
   display: flex;
@@ -78,7 +78,7 @@
 /* -----------------------------------------------------------------------------
    ЛЕНТА СО ВРЕДНОСТИ
    -------------------------------------------------------------------------- */
-.values { padding-block: var(--space-6); }
+.values { padding-block: clamp(var(--space-5), 3vw, var(--space-7)); }
 .values__grid {
   display: grid;
   gap: var(--space-5);
@@ -99,8 +99,11 @@
     align-items: center;
     text-align: left;
     gap: var(--space-3);
+    /* Секоја ставка се центрира во својата колона. Без ова четирите
+       се лепат лево и лентата изгледа накривена. */
+    justify-content: center;
   }
-  .value + .value { border-left: 1px solid rgba(46, 36, 56, 0.16); padding-left: var(--space-5); }
+  .value + .value { border-left: 1px solid rgba(46, 36, 56, 0.16); }
 }
 .value__icon {
   flex-shrink: 0;
@@ -118,7 +121,7 @@
   grid-template-columns: 1fr;
 }
 @media (min-width: 700px)  { .services__grid { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 1000px) { .services__grid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 1100px) { .services__grid { grid-template-columns: repeat(4, 1fr); } }
 
 /* Целосна страница со услуги — наизменични обоени секции */
 .service-block { padding-block: var(--section-y); }
@@ -229,16 +232,30 @@
 /* -----------------------------------------------------------------------------
    ВИДЕА
    -------------------------------------------------------------------------- */
+/* Односот на страни се води од една променлива, за да го делат и placeholder
+   плочката, и постерот, и вистинскиот плеер. Инаку видеото отскокнува од
+   9/16 на 16/9 во моментот кога посетителот ќе кликне „пушти". */
 .videos__grid {
+  --video-ratio: 16 / 9;
   display: grid;
   gap: var(--space-5);
   grid-template-columns: 1fr;
 }
-@media (min-width: 760px) { .videos__grid { grid-template-columns: repeat(2, 1fr); } }
-
-/* Првото видео зазема цела ширина — фокус наместо рамномерна каша */
 @media (min-width: 760px) {
+  .videos__grid { grid-template-columns: repeat(2, 1fr); }
+  /* Првото видео зазема цела ширина — фокус наместо рамномерна каша */
   .videos__grid > :first-child { grid-column: 1 / -1; }
+}
+
+/* Вертикални видеа (Reels формат): три рамноправни, без истакнато прво. */
+.videos__grid--vertical { --video-ratio: 9 / 16; }
+@media (min-width: 620px) {
+  .videos__grid--vertical { grid-template-columns: repeat(3, 1fr); }
+  .videos__grid--vertical > :first-child { grid-column: auto; }
+}
+/* Три вертикални видеа една до друга би биле премногу високи на широк екран */
+@media (min-width: 620px) {
+  .videos__grid--vertical { max-width: 760px; margin-inline: auto; }
 }
 
 .video-card {
@@ -257,7 +274,7 @@
   padding: 0;
   position: relative;
 }
-.video-card__btn img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+.video-card__btn img { width: 100%; aspect-ratio: var(--video-ratio); object-fit: cover; }
 
 .video-card__play {
   position: absolute;
@@ -282,7 +299,7 @@
 }
 
 .video-card iframe,
-.video-card video { width: 100%; aspect-ratio: 16 / 9; height: auto; display: block; }
+.video-card video { width: 100%; aspect-ratio: var(--video-ratio); height: auto; display: block; }
 
 /* -----------------------------------------------------------------------------
    РЕЦЕНЗИИ
