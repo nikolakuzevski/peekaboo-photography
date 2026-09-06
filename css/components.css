@@ -291,7 +291,7 @@
 
 /* -----------------------------------------------------------------------------
    PLACEHOLDER ЗА СЛИКА
-   Ова е причината зошто сајтот изгледа завршен иако сè уште нема фотографии.
+   Ова е причината зошто сајтот изгледа завршен иако сѐ уште нема фотографии.
    -------------------------------------------------------------------------- */
 .ph {
   position: relative;
@@ -622,6 +622,26 @@ body.is-locked { overflow: hidden; }
   font-size: var(--fs-small);
   opacity: 0.8;
 }
+
+/* Правни линкови во долниот ред на футерот.
+   Тап-целта мора да остане 44px и тука, инаку линковите се најтешките за
+   погодување на целиот сајт. */
+.footer__legal {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+}
+.footer__legal a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  opacity: 0.92;
+}
+.footer__legal a:hover { opacity: 1; }
+/* 0.8, не помалку: на 0.6 точката паѓа на 3.51:1 наспроти виолетовата. */
+.footer__legal span { opacity: 0.8; }
 
 /* Кружни иконки за социјални мрежи */
 .social { display: flex; gap: var(--space-2); }

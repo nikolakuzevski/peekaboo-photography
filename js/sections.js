@@ -271,7 +271,7 @@
       el.style.fontSize = size + 'px';
     }
 
-    // Сè уште не собира ни на подот — пушти го да се прелее нормално.
+    // Сѐ уште не собира ни на подот — пушти го да се прелее нормално.
     if (el.scrollWidth > avail) {
       el.style.whiteSpace = '';
       el.style.fontSize = '';

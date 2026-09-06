@@ -11,8 +11,10 @@
      редот со name="robots" подолу. -->
 <meta name="robots" content="noindex, nofollow">
 <title>Совети — Peek A&#39;Boo Photography</title>
+<!-- ВЕРЗИЈА 2: наслов без долга црта. Се брише пред објавување. -->
+<meta name="v2:title" content="Совети | Peek A'Boo Photography">
 <meta name="description" content="Практични совети за родители пред детска или семејна фотосесија — што да облечете, кога да дојдете и како да го подготвите детето.">
-<link rel="canonical" href="https://peekaboo.mk/soveti.html">
+<link rel="canonical" href="https://nikolakuzevski.github.io/peekaboo-photography/soveti.html">
 
 <meta property="og:type" content="website">
 <meta property="og:locale" content="mk_MK">
@@ -33,7 +35,14 @@
 <link rel="stylesheet" href="css/components.css">
 <link rel="stylesheet" href="css/pages.css">
 
+<!-- ВЕРЗИЈА 2: се брише пред објавување заедно со js/version.js -->
+<link rel="stylesheet" href="css/theme-v2.css">
+
 <script src="js/reveal.js"></script>
+
+<!-- ВЕРЗИЈА 2: прекинувач за споредба. Се брише пред објавување. -->
+<script src="content/site-data-v2.js"></script>
+<script src="js/version.js"></script>
 
 </head>
 
@@ -99,7 +108,8 @@
   <section class="page-head">
     <div class="container page-head__inner" data-reveal-group>
       <p class="eyebrow" data-reveal>Совети</p>
-      <h1 class="page-head__title" data-reveal>Мали работи што прават голема разлика</h1>
+      <h1 class="page-head__title" data-reveal
+          data-v2="Совети пред фотосесија">Мали работи што прават голема разлика</h1>
       <svg class="wave" data-reveal viewBox="-2 -3 194 27" fill="none" aria-hidden="true">
         <path d="M2 10c14-11 28 11 42 0s28-11 42 0 28 11 42 0 28-11 60 0"
               stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
@@ -191,6 +201,11 @@
     <div class="footer__bottom">
       <p style="margin:0">
         &copy; <span data-field="year">2026</span> Peek A&#8217;Boo Photography
+      </p>
+      <p class="footer__legal">
+        <a href="politika-na-privatnost.html">Политика на приватност</a>
+        <span aria-hidden="true">·</span>
+        <a href="uslovi.html">Услови на користење</a>
       </p>
       <p style="margin:0">Скопје, Северна Македонија</p>
     </div>

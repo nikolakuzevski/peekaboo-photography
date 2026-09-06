@@ -11,8 +11,10 @@
      редот со name="robots" подолу. -->
 <meta name="robots" content="noindex, nofollow">
 <title>Услуги — Peek A&#39;Boo Photography</title>
+<!-- ВЕРЗИЈА 2: наслов без долга црта. Се брише пред објавување. -->
+<meta name="v2:title" content="Услуги | Peek A'Boo Photography">
 <meta name="description" content="Крштевки, видео и фотосесии за деца и семејства во Скопје. Студио и снимање на локација.">
-<link rel="canonical" href="https://peekaboo.mk/uslugi.html">
+<link rel="canonical" href="https://nikolakuzevski.github.io/peekaboo-photography/uslugi.html">
 
 <meta property="og:type" content="website">
 <meta property="og:locale" content="mk_MK">
@@ -33,7 +35,14 @@
 <link rel="stylesheet" href="css/components.css">
 <link rel="stylesheet" href="css/pages.css">
 
+<!-- ВЕРЗИЈА 2: се брише пред објавување заедно со js/version.js -->
+<link rel="stylesheet" href="css/theme-v2.css">
+
 <script src="js/reveal.js"></script>
+
+<!-- ВЕРЗИЈА 2: прекинувач за споредба. Се брише пред објавување. -->
+<script src="content/site-data-v2.js"></script>
+<script src="js/version.js"></script>
 </head>
 <body>
 
@@ -96,14 +105,15 @@
   <section class="page-head">
     <div class="container page-head__inner" data-reveal-group>
       <p class="eyebrow" data-reveal>Услуги</p>
-      <h1 class="page-head__title" data-reveal data-fit-line="26">Што можеме да создадеме заедно</h1>
+      <h1 class="page-head__title" data-reveal data-fit-line="26"
+          data-v2="Што фотографирам">Што можеме да создадеме заедно</h1>
       <svg class="wave" data-reveal viewBox="-2 -3 194 27" fill="none" aria-hidden="true">
         <path d="M2 10c14-11 28 11 42 0s28-11 42 0 28 11 42 0 28-11 60 0"
               stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
       </svg>
       <p class="lead" style="margin-top:var(--space-5)" data-reveal>
         Секоја сесија ја договараме однапред, каде, кога и што ви е важно да остане
-        зачувано. Пишете ми и ќе ви одговорам со сè што ве интересира.
+        зачувано. Пишете ми и ќе ви одговорам со сѐ што ве интересира.
       </p>
     </div>
   </section>
@@ -114,7 +124,8 @@
     <div class="container container--narrow" style="text-align:center" data-reveal>
       <p class="eyebrow">Нешто друго?</p>
       <h2>Не го гледате тоа што ви треба?</h2>
-      <p class="lead" style="margin-inline:auto">
+      <p class="lead" style="margin-inline:auto"
+         data-v2="Роденденски прослави, труднички сесии, детски настани. Пишете ми и ќе видиме што можеме да смислиме.">
         Роденденски прослави, труднички сесии, детски настани — пишете ми и ќе
         видиме што можеме да смислиме.
       </p>
@@ -197,6 +208,11 @@
     <div class="footer__bottom">
       <p style="margin:0">
         &copy; <span data-field="year">2026</span> Peek A&#8217;Boo Photography
+      </p>
+      <p class="footer__legal">
+        <a href="politika-na-privatnost.html">Политика на приватност</a>
+        <span aria-hidden="true">·</span>
+        <a href="uslovi.html">Услови на користење</a>
       </p>
       <p style="margin:0">Скопје, Северна Македонија</p>
     </div>

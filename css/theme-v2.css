@@ -1,0 +1,144 @@
+/* =============================================================================
+   ТЕМА V2 — верзија без „vibe-coded" потписи
+   =============================================================================
+
+   СЀ ВО ОВОЈ ФАЈЛ Е ЗАКЛУЧЕНО ПОД  html[data-version="2"].
+   Додека тој атрибут го нема, ниту едно правило одовде не се применува и
+   сајтот изгледа точно како порано. Значи: овој фајл е безбеден за вчитување
+   на секоја страница.
+
+   За да се врати сѐ на старо засекогаш: избриши го <link>-от кон овој фајл
+   и кон js/version.js од сите страници. Ништо друго не треба да се допира.
+
+   Што менува и зошто (по барање на клиентот):
+     1. Копчињата и филтер-чиповите не се веќе капсули (999px). Заоблување 4px.
+     2. Затемнувањата врз слики беа во виолетова нијанса. Сега се неутрални.
+     3. Влезните анимации се само проѕирност, без движење. Лак-откривањето
+        и цртањето на брановидната линија се исклучени целосно.
+   ========================================================================== */
+
+/* -----------------------------------------------------------------------------
+   1. КРАЈ НА КАПСУЛЕСТИТЕ КОПЧИЊА
+   Само правоаголните контроли се менуваат. Кружните (мени, затвори,
+   стрелки во lightbox, социјални икони, копчето за пуштање видео) остануваат
+   кругови — тие се кругови, не капсули, и не се тоа на што се мисли.
+   -------------------------------------------------------------------------- */
+html[data-version="2"] .btn,
+html[data-version="2"] .chip,
+html[data-version="2"] .skip-link {
+  border-radius: 4px;
+}
+
+/* Капсулата ја носеше целата „мекост" на копчето. Без неа тежината мора да
+   дојде од работ и од внатрешниот простор, инаку копчето изгледа недовршено. */
+html[data-version="2"] .btn {
+  padding-left: var(--space-7);
+  padding-right: var(--space-7);
+  letter-spacing: 0.01em;
+}
+
+html[data-version="2"] .chip {
+  box-shadow: inset 0 0 0 1px var(--line-strong);
+}
+html[data-version="2"] .chip[aria-pressed="true"] {
+  box-shadow: inset 0 0 0 1px var(--fill-purple);
+}
+
+/* Копчето повеќе не отскокнува нагоре на hover. Останува само промената на
+   сенката, којашто е доволен знак дека е кликливо. */
+html[data-version="2"] .btn:hover { transform: none; }
+html[data-version="2"] .btn:active { transform: none; }
+html[data-version="2"] .chip:active { transform: none; }
+
+/* -----------------------------------------------------------------------------
+   2. НЕУТРАЛНИ ЗАТЕМНУВАЊА ВРЗ СЛИКИ
+   Двете преливања на сајтот не се украс, тие се тука за да остане читлив
+   белиот текст врз непозната фотографија. Затоа остануваат, но во неутрална
+   темна боја наместо во виолетова.
+   -------------------------------------------------------------------------- */
+html[data-version="2"] .gallery__veil {
+  background: linear-gradient(to top, rgba(20, 20, 22, 0.45), transparent 55%);
+}
+html[data-version="2"] .photo-grid__caption {
+  background: linear-gradient(to top, rgba(16, 16, 18, 0.80), transparent);
+}
+
+/* -----------------------------------------------------------------------------
+   3. ПОМИРНО ДВИЖЕЊЕ
+   Содржината само се појавува. Не патува нагоре, не се открива низ лак,
+   линијата не се црта пред очи.
+   -------------------------------------------------------------------------- */
+html[data-version="2"] {
+  --travel: 0px;
+  --dur-slow: 260ms;
+  --dur-signature: 260ms;
+}
+
+html[data-version="2"].js-reveal .arch-reveal { clip-path: none; }
+html[data-version="2"].js-reveal .arch-reveal.is-visible { clip-path: none; transition: none; }
+
+html[data-version="2"].js-reveal .wave[data-reveal] path { stroke-dashoffset: 0; }
+html[data-version="2"].js-reveal .wave[data-reveal].is-visible path { transition: none; }
+
+/* Сликите во галеријата веќе не се зголемуваат под покажувачот. */
+html[data-version="2"] .gallery__btn:hover img { transform: none; }
+html[data-version="2"] .video-card__btn:hover .video-card__play { transform: translate(-50%, -50%); }
+
+/* -----------------------------------------------------------------------------
+   ЧЕСНА ПРАЗНА СОСТОЈБА ЗА РЕЦЕНЗИИТЕ
+   Види js/version.js — во оваа верзија нема ниту една пример-рецензија, па
+   делот се прикажува како порака, не како картичка што личи на рецензија.
+   -------------------------------------------------------------------------- */
+.reviews-empty {
+  /* Родителот е мрежа за картички со рецензии. Без ова, пораката би седнала
+     во првата колона и би изгледала како осамена картичка наместо како текст. */
+  grid-column: 1 / -1;
+  max-width: 52ch;
+  margin: 0 auto;
+  padding: var(--space-7) var(--space-6);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  text-align: center;
+}
+.reviews-empty p { margin: 0 0 var(--space-5); }
+.reviews-empty p:last-child { margin-bottom: 0; }
+
+/* -----------------------------------------------------------------------------
+   ПРЕКИНУВАЧОТ ЗА СПОРЕДБА
+   ⚠️  ПРИВРЕМЕН. Се брише пред објавување заедно со js/version.js.
+   Намерно е дискретен и надвор од дизајнот, за да не се помеша со сајтот.
+   -------------------------------------------------------------------------- */
+.vswitch {
+  position: fixed;
+  right: 12px;
+  bottom: 12px;
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 8px 14px;
+  border: 1px solid #3A3A3A;
+  border-radius: 4px;
+  background: #1C1C1E;
+  color: #FFFFFF;
+  font-family: var(--font-body, system-ui, sans-serif);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.28);
+}
+.vswitch:hover { background: #2A2A2E; }
+.vswitch:focus-visible { outline: 3px solid #FFFFFF; outline-offset: 2px; }
+.vswitch__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #8FD14F;
+}
+html:not([data-version="2"]) .vswitch__dot { background: #E0A500; }
+
+@media print {
+  .vswitch { display: none; }
+}

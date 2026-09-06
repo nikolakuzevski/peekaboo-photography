@@ -11,8 +11,10 @@
      редот со name="robots" подолу. -->
 <meta name="robots" content="noindex, nofollow">
 <title>Рецензии — Peek A&#39;Boo Photography</title>
+<!-- ВЕРЗИЈА 2: наслов без долга црта. Се брише пред објавување. -->
+<meta name="v2:title" content="Рецензии | Peek A'Boo Photography">
 <meta name="description" content="Што велат родителите за сесиите со Peek A&#39;Boo Photography во Скопје.">
-<link rel="canonical" href="https://peekaboo.mk/recenzii.html">
+<link rel="canonical" href="https://nikolakuzevski.github.io/peekaboo-photography/recenzii.html">
 
 <meta property="og:type" content="website">
 <meta property="og:locale" content="mk_MK">
@@ -33,7 +35,14 @@
 <link rel="stylesheet" href="css/components.css">
 <link rel="stylesheet" href="css/pages.css">
 
+<!-- ВЕРЗИЈА 2: се брише пред објавување заедно со js/version.js -->
+<link rel="stylesheet" href="css/theme-v2.css">
+
 <script src="js/reveal.js"></script>
+
+<!-- ВЕРЗИЈА 2: прекинувач за споредба. Се брише пред објавување. -->
+<script src="content/site-data-v2.js"></script>
+<script src="js/version.js"></script>
 </head>
 <body>
 
@@ -101,7 +110,10 @@
         <path d="M2 10c14-11 28 11 42 0s28-11 42 0 28 11 42 0 28-11 60 0"
               stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
       </svg>
-      <p class="lead" style="margin-top:var(--space-5)" data-reveal>
+      <!-- data-v2: реченицата во верзија 1 тврди дека има семејства што се
+           вратиле по втор пат. Тоа никој не го потврдил. -->
+      <p class="lead" style="margin-top:var(--space-5)" data-reveal
+         data-v2="Рецензиите ги собираме на Google. Тука ќе стојат само вистински.">
         Најубавото признание доаѓа од семејствата што се вратиле по втор пат.
       </p>
     </div>
@@ -200,6 +212,11 @@
     <div class="footer__bottom">
       <p style="margin:0">
         &copy; <span data-field="year">2026</span> Peek A&#8217;Boo Photography
+      </p>
+      <p class="footer__legal">
+        <a href="politika-na-privatnost.html">Политика на приватност</a>
+        <span aria-hidden="true">·</span>
+        <a href="uslovi.html">Услови на користење</a>
       </p>
       <p style="margin:0">Скопје, Северна Македонија</p>
     </div>

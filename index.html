@@ -11,8 +11,10 @@
      редот со name="robots" подолу. -->
 <meta name="robots" content="noindex, nofollow">
 <title>Peek A'Boo Photography — детска фотографија во Скопје</title>
+<!-- ВЕРЗИЈА 2: наслов без долга црта. Се брише пред објавување. -->
+<meta name="v2:title" content="Детска и семејна фотографија во Скопје | Peek A'Boo Photography">
 <meta name="description" content="Детска и семејна фотографија во Скопје. Крштевки, фотосесии за новороденчиња и семејства, видео. Опуштени сесии без брзање и без принудни пози.">
-<link rel="canonical" href="https://peekaboo.mk/">
+<link rel="canonical" href="https://nikolakuzevski.github.io/peekaboo-photography/">
 
 <meta property="og:type" content="website">
 <meta property="og:locale" content="mk_MK">
@@ -33,9 +35,16 @@
 <link rel="stylesheet" href="css/components.css">
 <link rel="stylesheet" href="css/pages.css">
 
+<!-- ВЕРЗИЈА 2: се брише пред објавување заедно со js/version.js -->
+<link rel="stylesheet" href="css/theme-v2.css">
+
 <!-- Мора да е тука, без defer: ја додава класата што ги крие reveal елементите
      пред првото исцртување. Ако не се вчита, содржината останува видлива. -->
 <script src="js/reveal.js"></script>
+
+<!-- ВЕРЗИЈА 2: прекинувач за споредба. Се брише пред објавување. -->
+<script src="content/site-data-v2.js"></script>
+<script src="js/version.js"></script>
 
 <script type="application/ld+json">
 {
@@ -44,8 +53,8 @@
   "additionalType": "https://schema.org/ProfessionalService",
   "name": "Peek A'Boo Photography",
   "description": "Детска и семејна фотографија во Скопје — крштевки, фотосесии и видео.",
-  "image": "https://peekaboo.mk/images/logo.png",
-  "url": "https://peekaboo.mk/",
+  "image": "https://nikolakuzevski.github.io/peekaboo-photography/images/logo.png",
+  "url": "https://nikolakuzevski.github.io/peekaboo-photography/",
   "areaServed": "Северна Македонија",
   "address": { "@type": "PostalAddress", "addressLocality": "Скопје", "addressCountry": "MK" },
   "sameAs": ["https://www.instagram.com/peekaboophotographyy/"]
@@ -116,7 +125,10 @@
     <div class="container hero__grid">
       <div data-reveal-group>
         <p class="eyebrow eyebrow--script" data-reveal>Детска фотографија · Скопје</p>
-        <h1 class="hero__title" data-reveal>
+        <!-- data-v2: во верзија 2 насловот кажува што е студиото, наместо да
+             продава чувство што никој не го напишал. -->
+        <h1 class="hero__title" data-reveal
+            data-v2="Детска и семејна фотографија во Скопје">
           Тие растат <br class="br-lg">побрзо од <br class="br-lg"><em>што мислиш.</em>
         </h1>
 
@@ -161,7 +173,10 @@
              stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M12 20s-7-4.4-7-9.4A4.6 4.6 0 0 1 12 7a4.6 4.6 0 0 1 7 3.6C19 15.6 12 20 12 20z"/>
         </svg>
-        <p class="value__label">Опуштена атмосфера</p>
+        <!-- data-v2: четирите ставки во верзија 1 се ветувања што никој не ги
+             потврдил („брза достава"). Во верзија 2 стојат само проверливи
+             факти, земени од контакт податоците и од списокот услуги. -->
+        <p class="value__label" data-v2="Деца од секоја возраст">Опуштена атмосфера</p>
       </div>
       <div class="value" data-reveal>
         <svg class="value__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -169,21 +184,21 @@
           <circle cx="12" cy="12" r="8.5"/><path d="M8.5 14.2c1 1.3 2.1 1.9 3.5 1.9s2.5-.6 3.5-1.9"/>
           <circle cx="9.3" cy="10" r="1"/><circle cx="14.7" cy="10" r="1"/>
         </svg>
-        <p class="value__label">Природни моменти</p>
+        <p class="value__label" data-v2="Крштевки, родендени, фотосесии">Природни моменти</p>
       </div>
       <div class="value" data-reveal>
         <svg class="value__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
              stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M4 20V9.8L12 4l8 5.8V20"/><path d="M9.5 20v-5.5h5V20"/>
         </svg>
-        <p class="value__label">Студио и на локација</p>
+        <p class="value__label" data-v2="Студио во Ѓорче Петров">Студио и на локација</p>
       </div>
       <div class="value" data-reveal>
         <svg class="value__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
              stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <circle cx="12" cy="12" r="8.5"/><path d="M12 7.2V12l3.2 2"/>
         </svg>
-        <p class="value__label">Брза достава на фотографии</p>
+        <p class="value__label" data-v2="Термини по договор">Брза достава на фотографии</p>
       </div>
     </div>
   </section>
@@ -204,7 +219,7 @@
     <div class="container">
       <div class="section-head">
         <p class="eyebrow" data-reveal>Портфолио</p>
-        <h2 data-reveal>Мали луѓе, вистински моменти</h2>
+        <h2 data-reveal data-v2="Избрани фотографии">Мали луѓе, вистински моменти</h2>
       </div>
 
       <div class="editorial" data-portfolio-teaser data-reveal-group></div>
@@ -239,8 +254,9 @@
     <div class="container">
       <div class="section-head">
         <p class="eyebrow" data-reveal>Видео</p>
-        <h2 data-reveal data-fit-line="24">Вашата приказна во движење</h2>
-        <p class="lead" data-reveal>
+        <h2 data-reveal data-fit-line="24" data-v2="Видео од сесиите">Вашата приказна во движење</h2>
+        <p class="lead" data-reveal
+           data-v2="Видео до 60 секунди, во вертикална форма, монтирано и подготвено за споделување.">
           Highlights од вашите најубави моменти, спакувани во видео до 60 секунди,
           во вертикална форма.
         </p>
@@ -258,7 +274,10 @@
   </section>
 
   <!-- ══ РЕЦЕНЗИИ ════════════════════════════════════════════════════════ -->
-  <section class="section">
+  <!-- data-v2-hide: во верзија 2 нема пример-рецензии, па на почетната нема
+       што да покаже овој дел. Страницата recenzii.html останува и таму стои
+       чесно објаснување. Кога ќе има вистински рецензии, тргни го атрибутот. -->
+  <section class="section" data-v2-hide>
     <div class="container">
       <div class="section-head">
         <p class="eyebrow" data-reveal>Рецензии</p>
@@ -278,7 +297,7 @@
   <!-- ══ INSTAGRAM ═══════════════════════════════════════════════════════ -->
   <section class="section section--tight band" data-color="yellow">
     <div class="container ig" data-reveal>
-      <p class="eyebrow">Секојдневно</p>
+      <p class="eyebrow" data-v2="Instagram">Секојдневно</p>
       <h2 style="margin-bottom:var(--space-2)">Следи ме на Instagram</h2>
       <a class="ig__handle" href="#" data-link="instagram-link" target="_blank" rel="noopener">
         <span data-field="instagramHandle">@peekaboophotographyy</span>
@@ -294,7 +313,8 @@
     <div class="container cta__inner" data-reveal>
       <p class="eyebrow">Ајде да почнеме</p>
       <h2 class="cta__title" data-fit-line="24">Да ги зачуваме моментите додека се тука</h2>
-      <p class="lead">Напишете ми кога и што сакате да фотографираме. Одговарам брзо.</p>
+      <!-- data-v2: „Одговарам брзо" е ветување што сајтот не може да го држи. -->
+      <p class="lead" data-v2="Напишете ми кога и што сакате да фотографираме.">Напишете ми кога и што сакате да фотографираме. Одговарам брзо.</p>
       <div class="cta__actions">
         <a class="btn btn--onband" href="kontakt.html">
           Контактирај ме <span class="btn__arrow" aria-hidden="true">&rarr;</span>
@@ -365,6 +385,11 @@
     <div class="footer__bottom">
       <p style="margin:0">
         &copy; <span data-field="year">2026</span> Peek A&#8217;Boo Photography
+      </p>
+      <p class="footer__legal">
+        <a href="politika-na-privatnost.html">Политика на приватност</a>
+        <span aria-hidden="true">·</span>
+        <a href="uslovi.html">Услови на користење</a>
       </p>
       <p style="margin:0">Скопје, Северна Македонија</p>
     </div>
