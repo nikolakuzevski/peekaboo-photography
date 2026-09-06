@@ -45,24 +45,12 @@ html[data-version="2"] .card__media .frame {
   aspect-ratio: 3 / 4 !important;
 }
 
-/* -----------------------------------------------------------------------------
-   ПОРАЗИГРАНИ ФОРМИ ВО ГАЛЕРИЈАТА
-   Сите плочки со ист заоблен правоаголник изгледаат како табела. Тука се
-   менуваат во ритам од четири: лак, лист, мек правоаголник, огледален лист.
-   Ритамот е 4, а колоните се 3, па по редови формите не се повторуваат
-   вертикално една под друга.
-   -------------------------------------------------------------------------- */
-html[data-version="2"] .gallery__item > * { border-radius: var(--r-lg); overflow: hidden; }
-html[data-version="2"] .gallery__item:nth-child(4n + 1) > * { border-radius: var(--r-arch); }
-html[data-version="2"] .gallery__item:nth-child(4n + 2) > * { border-radius: var(--r-leaf); }
-html[data-version="2"] .gallery__item:nth-child(4n + 3) > * { border-radius: var(--r-lg); }
-html[data-version="2"] .gallery__item:nth-child(4n + 4) > * {
-  border-radius: var(--r-lg) 999px var(--r-lg) 999px;   /* огледален лист */
-}
-
-/* Внатрешната рамка и слика ја наследуваат формата, инаку аголот се гледа. */
-html[data-version="2"] .gallery__item .frame,
-html[data-version="2"] .gallery__item .gallery__veil { border-radius: inherit; }
+/* ПОРТФОЛИОТО НЕМА СВОИ ПРАВИЛА ТУКА.
+   Еден круг имаше „поразиграни" форми на плочките (лак, лист, огледален
+   лист, во ритам од четири). Клиентот рече дека тие формати изгледаат
+   лошо и побара портфолиото да се врати како во верзија 1. Затоа тие
+   правила се избришани наместо преправени — галеријата сега доаѓа
+   неизменета од css/pages.css, исто како во верзија 1. */
 
 /* -----------------------------------------------------------------------------
    ВИДЕА
@@ -109,6 +97,43 @@ html[data-version="2"] .about-hero__portrait { margin-top: var(--space-5); }
 }
 .reviews-empty p { margin: 0 0 var(--space-5); }
 .reviews-empty p:last-child { margin-bottom: 0; }
+
+/* -----------------------------------------------------------------------------
+   СКРАТЕНИ РЕЦЕНЗИИ
+   Вистинските рецензии се различно долги, па картичките излегуваа неуредно
+   високи. Долгите сега стојат собрани на околу триесетина зборови и се
+   отвораат на клик. Види quoteCard() во js/version.js.
+   -------------------------------------------------------------------------- */
+/* Скратувањето по зборови само по себе не дава еднакви висини: осумнаесет
+   кратки зборови собираат седум реда, осумнаесет долги („професионална",
+   „фотосесијата") девет. Затоа собраната состојба се заклучува на точно шест
+   реда — сите картички во редот излегуваат со иста висина. */
+html[data-version="2"] .quote--clamped .quote__short {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 6;
+  overflow: hidden;
+}
+
+html[data-version="2"] .quote__more {
+  align-self: flex-start;
+  min-height: 44px;              /* тап-цел, како секое друго копче на сајтот */
+  padding: 0;
+  background: none;
+  border: 0;
+  color: var(--text-purple);
+  font-family: var(--font-body);
+  font-size: var(--fs-small);
+  font-weight: 700;
+  text-align: left;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+html[data-version="2"] .quote__more:hover { text-decoration-thickness: 2px; }
+
+/* Отворената картичка не смее да ги растегне соседните во мрежата. */
+html[data-version="2"] .quote { align-self: start; }
 
 /* Лентата под ротирачките рецензии: копче за пауза и бројач. */
 .reviews-rotate {

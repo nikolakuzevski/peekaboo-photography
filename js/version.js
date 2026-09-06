@@ -246,15 +246,71 @@
 
   var ROTATE_MS = 8000;
 
+  /* СКРАТУВАЊЕ НА ДОЛГИТЕ РЕЦЕНЗИИ
+     Вистинските рецензии се различно долги: една е од две реченици, друга од
+     три параграфи. Ако сите се прикажат цели, картичките излегуваат неуредно
+     високи и делот се растегнува надолу без потреба.
+
+     WORD_LIMIT   до колку зборови се прикажува во собрана состојба.
+                  На картичка од околу 356px влегуваат некои три збора во ред,
+                  па 18 зборови се приближно шест реда. Мерено, не погодено.
+     MIN_HIDDEN   под колку скриени зборови воопшто не вреди да се скратува;
+                  копче „прочитај повеќе" што открива три збора е потсмев */
+  var WORD_LIMIT = 18;
+  var MIN_HIDDEN = 6;
+
   function quoteCard(r) {
-    return '<figure class="quote">' +
+    var full = String(r.text == null ? '' : r.text);
+    var w = full.trim().split(/\s+/);
+    var clamp = w.length > WORD_LIMIT + MIN_HIDDEN;
+
+    /* Кратката верзија намерно се спојува со обични празни места: цепењето по
+       /\s+/ ги голта преломите на редови, па собраната картичка е компактен
+       блок. Целиот текст ги задржува параграфите (види white-space: pre-line
+       во components.css). */
+    var body = clamp
+      ? '<blockquote class="quote__text">' +
+          '<span class="quote__short">' +
+            window.PB.esc(w.slice(0, WORD_LIMIT).join(' ')) + '…' +
+          '</span>' +
+          '<span class="quote__full" hidden>' + window.PB.esc(full) + '</span>' +
+        '</blockquote>' +
+        '<button class="quote__more" type="button" aria-expanded="false">' +
+          'Прочитај ја целата' +
+        '</button>'
+      : '<blockquote class="quote__text">' + window.PB.esc(full) + '</blockquote>';
+
+    return '<figure class="quote' + (clamp ? ' quote--clamped' : '') + '">' +
              '<span class="quote__mark" aria-hidden="true">&ldquo;</span>' +
-             '<blockquote class="quote__text">' + window.PB.esc(r.text) + '</blockquote>' +
+             body +
              '<figcaption class="quote__foot">' +
                '<span class="quote__name">' + window.PB.esc(r.name) + '</span>' +
                (r.source ? '<span class="quote__source">преку ' + window.PB.esc(r.source) + '</span>' : '') +
              '</figcaption>' +
            '</figure>';
+  }
+
+  /** Отвора и затвора една скратена рецензија.
+   *  Слушателот стои на контејнерот, не на копчето: картичките се
+   *  прецртуваат при ротација, па слушател на самото копче би исчезнал
+   *  заедно со него. */
+  function bindExpand(wrap) {
+    wrap.addEventListener('click', function (e) {
+      var btn = e.target && e.target.closest ? e.target.closest('.quote__more') : null;
+      if (!btn || !wrap.contains(btn)) return;
+
+      var fig = btn.closest('.quote');
+      var short = fig.querySelector('.quote__short');
+      var full = fig.querySelector('.quote__full');
+      if (!short || !full) return;
+
+      var open = btn.getAttribute('aria-expanded') === 'true';
+      short.hidden = !open;
+      full.hidden = open;
+      fig.classList.toggle('is-open', !open);
+      btn.setAttribute('aria-expanded', open ? 'false' : 'true');
+      btn.textContent = open ? 'Прочитај ја целата' : 'Собери ја';
+    });
   }
 
   function renderReviews() {
@@ -295,6 +351,7 @@
     }
 
     paint();
+    bindExpand(wrap);
 
     if (pages < 2) return;
 
