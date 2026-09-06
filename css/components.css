@@ -446,7 +446,10 @@
   /* Затемнетата корална, не fill-коралната: #E87153 на крем е 2.84:1. */
   color: var(--text-coral);
 }
-.quote__text { flex: 1; margin: 0; font-size: var(--fs-lead); }
+/* white-space: pre-line — некои вистински рецензии се напишани во повеќе
+   параграфи (празен ред меѓу нив); без ова секоја празнина би се стопила во
+   еден проред и текстот би излегол како едно нечитливо ѕидче. */
+.quote__text { flex: 1; margin: 0; font-size: var(--fs-lead); white-space: pre-line; }
 .quote__foot { display: flex; align-items: baseline; gap: var(--space-2); flex-wrap: wrap; }
 .quote__name { font-weight: 700; }
 .quote__source { font-size: var(--fs-small); color: var(--ink-muted); }
