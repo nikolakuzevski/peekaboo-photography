@@ -124,11 +124,12 @@
 
     <div class="container hero__grid">
       <div data-reveal-group>
-        <p class="eyebrow eyebrow--script" data-reveal>Детска фотографија · Скопје</p>
-        <!-- data-v2: во верзија 2 насловот кажува што е студиото, наместо да
-             продава чувство што никој не го напишал. -->
-        <h1 class="hero__title" data-reveal
-            data-v2="Детска и семејна фотографија во Скопје">
+        <!-- data-v2-hide: клиентот побара „Детска фотографија · Скопје" да
+             го нема над насловот во верзија 2. -->
+        <p class="eyebrow eyebrow--script" data-reveal data-v2-hide>Детска фотографија · Скопје</p>
+        <!-- Насловот е вратен на оригиналниот текст од верзија 1 по барање
+             на клиентот — нема веќе data-v2 замена тука. -->
+        <h1 class="hero__title" data-reveal>
           Тие растат <br class="br-lg">побрзо од <br class="br-lg"><em>што мислиш.</em>
         </h1>
 
