@@ -85,6 +85,63 @@ html[data-version="2"] .gallery__btn:hover img { transform: none; }
 html[data-version="2"] .video-card__btn:hover .video-card__play { transform: translate(-50%, -50%); }
 
 /* -----------------------------------------------------------------------------
+   ПОВИСОКИ СЛИКИ ВО КАРТИЧКИТЕ ЗА УСЛУГИ (почетна)
+   Односот е напишан како inline style од js/ui.js, за да нема поместување кога
+   вистинската слика ќе слета. Затоа тука треба !important. Тоа е единствениот
+   начин да се смени, освен со менување на верзија 1.
+   -------------------------------------------------------------------------- */
+html[data-version="2"] .card__media .ph,
+html[data-version="2"] .card__media .frame {
+  aspect-ratio: 3 / 4 !important;
+}
+
+/* -----------------------------------------------------------------------------
+   ПОРАЗИГРАНИ ФОРМИ ВО ГАЛЕРИЈАТА
+   Сите плочки со ист заоблен правоаголник изгледаат како табела. Тука се
+   менуваат во ритам од четири: лак, лист, мек правоаголник, огледален лист.
+   Ритамот е 4, а колоните се 3, па по редови формите не се повторуваат
+   вертикално една под друга.
+   -------------------------------------------------------------------------- */
+html[data-version="2"] .gallery__item > * { border-radius: var(--r-lg); overflow: hidden; }
+html[data-version="2"] .gallery__item:nth-child(4n + 1) > * { border-radius: var(--r-arch); }
+html[data-version="2"] .gallery__item:nth-child(4n + 2) > * { border-radius: var(--r-leaf); }
+html[data-version="2"] .gallery__item:nth-child(4n + 3) > * { border-radius: var(--r-lg); }
+html[data-version="2"] .gallery__item:nth-child(4n + 4) > * {
+  border-radius: var(--r-lg) 999px var(--r-lg) 999px;   /* огледален лист */
+}
+
+/* Внатрешната рамка и слика ја наследуваат формата, инаку аголот се гледа. */
+html[data-version="2"] .gallery__item .frame,
+html[data-version="2"] .gallery__item .gallery__veil { border-radius: inherit; }
+
+/* -----------------------------------------------------------------------------
+   ВИДЕА
+   Почетна: четири вертикални во еден ред на широк екран.
+   Страницата „Видеа": четири вертикални, две во ред, па уште две.
+   -------------------------------------------------------------------------- */
+@media (min-width: 960px) {
+  html[data-version="2"] .videos__grid--vertical { grid-template-columns: repeat(4, 1fr); }
+}
+
+html[data-version="2"] .videos__grid--pairs {
+  --video-ratio: 9 / 16;
+  max-width: 720px;
+  margin-inline: auto;
+}
+@media (min-width: 620px) {
+  html[data-version="2"] .videos__grid--pairs { grid-template-columns: repeat(2, 1fr); }
+  /* Верзија 1 го растегнува првото видео преку целата ширина. Тука не. */
+  html[data-version="2"] .videos__grid--pairs > :first-child { grid-column: auto; }
+}
+
+/* -----------------------------------------------------------------------------
+   ПОРТРЕТОТ НА СТРАНИЦАТА „ЗА МЕНЕ"
+   Текстот под портретот е тргнат, па портретот се спушта малку за да не виси
+   веднаш под огромното име.
+   -------------------------------------------------------------------------- */
+html[data-version="2"] .about-hero__portrait { margin-top: var(--space-5); }
+
+/* -----------------------------------------------------------------------------
    ЧЕСНА ПРАЗНА СОСТОЈБА ЗА РЕЦЕНЗИИТЕ
    Види js/version.js — во оваа верзија нема ниту една пример-рецензија, па
    делот се прикажува како порака, не како картичка што личи на рецензија.
@@ -102,6 +159,16 @@ html[data-version="2"] .video-card__btn:hover .video-card__play { transform: tra
 }
 .reviews-empty p { margin: 0 0 var(--space-5); }
 .reviews-empty p:last-child { margin-bottom: 0; }
+
+/* Лентата под ротирачките рецензии: копче за пауза и бројач. */
+.reviews-rotate {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+}
+.reviews-rotate__count { font-size: var(--fs-small); opacity: .8; }
 
 /* -----------------------------------------------------------------------------
    ПРЕКИНУВАЧОТ ЗА СПОРЕДБА

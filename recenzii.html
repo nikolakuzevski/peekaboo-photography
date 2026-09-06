@@ -134,7 +134,14 @@
         што одвојувате една минута.
       </p>
       <p style="margin-top:var(--space-6)">
-        <a class="btn btn--primary" href="#" data-link="maps-link" target="_blank" rel="noopener">
+        <!-- Верзија 1 го праќа копчето на локацијата во Google Maps, што е
+             погрешно место за пишување рецензија. Верзија 2 води директно на
+             формуларот за рецензија на профилот. Place ID-то е трајно, за
+             разлика од скратените линкови.
+             data-link= (празно) го тргнува атрибутот за да не го пребрише
+             js/nav.js href-от назад на локацијата. -->
+        <a class="btn btn--primary" href="#" data-link="maps-link" target="_blank" rel="noopener"
+           data-v2-attr="data-link=; href=https://search.google.com/local/writereview?placeid=ChIJK-X8P6MTVBMR-LLXZRuXlqk">
           Напиши рецензија <span class="btn__arrow" aria-hidden="true">&rarr;</span>
         </a>
       </p>

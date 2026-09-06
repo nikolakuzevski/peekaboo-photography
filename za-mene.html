@@ -105,13 +105,15 @@
   <!-- ══ HERO — огромно име, портретот го преклопува ═════════════════════ -->
   <section class="about-hero band" data-color="yellow">
     <div class="container about-hero__stage">
-      <p class="eyebrow" data-reveal>За мене</p>
+      <p class="eyebrow" data-reveal data-v2="Здраво јас сум">За мене</p>
 
       <h1 class="about-hero__name" data-about-name data-reveal>XXX</h1>
 
       <div class="about-hero__portrait" data-about-portrait data-reveal></div>
 
-      <p class="about-hero__intro" data-about-intro data-reveal></p>
+      <!-- data-v2-hide: во верзија 2 текстот под портретот е тргнат.
+           Приказната почнува веднаш во следниот дел. -->
+      <p class="about-hero__intro" data-about-intro data-reveal data-v2-hide></p>
     </div>
   </section>
 

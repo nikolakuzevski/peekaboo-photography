@@ -262,8 +262,10 @@
         </p>
       </div>
 
+      <!-- data-v2-attr: во верзија 2 се четири видеа, не три. -->
       <div class="videos__grid videos__grid--vertical" data-videos data-ratio="9 / 16"
-           data-placeholder-count="3" data-reveal-group></div>
+           data-placeholder-count="3" data-v2-attr="data-placeholder-count=4"
+           data-reveal-group></div>
 
       <p style="margin-top:var(--space-7)">
         <a class="link-arrow" href="videa.html">
@@ -274,10 +276,10 @@
   </section>
 
   <!-- ══ РЕЦЕНЗИИ ════════════════════════════════════════════════════════ -->
-  <!-- data-v2-hide: во верзија 2 нема пример-рецензии, па на почетната нема
-       што да покаже овој дел. Страницата recenzii.html останува и таму стои
-       чесно објаснување. Кога ќе има вистински рецензии, тргни го атрибутот. -->
-  <section class="section" data-v2-hide>
+  <!-- Овој дел се врати во верзија 2 по барање на клиентот: тука одат
+       вистински Google рецензии. Додека ги нема внесено во site-data.js,
+       стои чесна порака со копче до Google профилот. -->
+  <section class="section">
     <div class="container">
       <div class="section-head">
         <p class="eyebrow" data-reveal>Рецензии</p>

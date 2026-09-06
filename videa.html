@@ -112,7 +112,7 @@
               stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
       </svg>
       <p class="lead" style="margin-top:var(--space-5)" data-reveal
-         data-v2="Кратки филмови од крштевки, прослави и семејни сесии. Фотографијата го задржува лицето, видеото го задржува гласот, смеата и движењето.">
+         data-v2="Кратко видео од роденден, фотосесија или прослава со најважните моменти. Фотографијата го задржува моментот, видеото му дава живот и го враќа чувството од тој ден.">
         Кратки, топли филмови од крштевки, прослави и семејни сесии. Фотографијата го
         задржува лицето — видеото го задржува гласот, смеата и движењето.
       </p>
@@ -121,11 +121,17 @@
 
   <section class="section" style="padding-top:0">
     <div class="container">
-      <div class="videos__grid" data-videos data-placeholder-count="4" data-reveal-group></div>
+      <!-- Верзија 1: 16/9, првото видео преку цела ширина.
+           Верзија 2: четири вертикални видеа, две во ред, па уште две. -->
+      <div class="videos__grid" data-videos data-placeholder-count="4"
+           data-v2-attr="data-ratio=9 / 16" data-v2-class="videos__grid--pairs"
+           data-reveal-group></div>
     </div>
   </section>
 
-  <section class="section band" data-color="cream">
+  <!-- data-v2-hide: во верзија 2 овој дел го нема воопшто. Истите работи
+       веќе се кажани на страницата „Услуги", во блокот за видео. -->
+  <section class="section band" data-color="cream" data-v2-hide>
     <div class="container container--narrow" data-reveal>
       <p class="eyebrow">Како изгледа</p>
       <h2>Што добивате</h2>

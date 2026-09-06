@@ -122,6 +122,21 @@
     return result;
   }
 
+  /** Длабинско спојување на обични објекти. Низите се ЗАМЕНУВААТ цели, не се
+   *  спојуваат член по член: кога се менува список (совети, ставки на услуга),
+   *  секогаш се мисли на целиот нов список, никогаш на делумно преклопување. */
+  function deepMerge(base, patch) {
+    if (!patch || typeof patch !== 'object' || Array.isArray(patch)) return patch;
+    var out = {};
+    Object.keys(base || {}).forEach(function (k) { out[k] = base[k]; });
+    Object.keys(patch).forEach(function (k) {
+      var b = out[k], p = patch[k];
+      out[k] = (b && p && typeof b === 'object' && typeof p === 'object' &&
+                !Array.isArray(b) && !Array.isArray(p)) ? deepMerge(b, p) : p;
+    });
+    return out;
+  }
+
   function patchSiteData() {
     var v2 = window.SITE_V2;
     if (!window.SITE || !v2) return;
@@ -132,6 +147,32 @@
 
     if (Object.prototype.hasOwnProperty.call(v2, 'reviews')) {
       window.SITE.reviews = v2.reviews;
+    }
+
+    // Делумни измени по клуч: contact, about, tips...
+    if (v2.overrides) {
+      Object.keys(v2.overrides).forEach(function (k) {
+        window.SITE[k] = deepMerge(window.SITE[k], v2.overrides[k]);
+      });
+    }
+
+    /* Услугите се низа, а измените се однесуваат на една услуга. Клучот е
+       `slug`, не редниот број: така преместување на некоја услуга во
+       site-data.js не ја пренасочува тивко измената кон погрешна услуга. */
+    if (v2.servicesBySlug && Array.isArray(window.SITE.services)) {
+      var seen = {};
+      window.SITE.services = window.SITE.services.map(function (s) {
+        var patch = v2.servicesBySlug[s.slug];
+        if (!patch) return s;
+        seen[s.slug] = true;
+        return deepMerge(s, patch);
+      });
+      Object.keys(v2.servicesBySlug).forEach(function (slug) {
+        if (!seen[slug] && window.console && console.warn) {
+          console.warn('[verzija 2] Нема услуга со slug "' + slug +
+                       '" во site-data.js. Измената е прескокната.');
+        }
+      });
     }
   }
 
@@ -150,31 +191,179 @@
     Array.prototype.forEach.call(document.querySelectorAll('[data-v2-html]'), function (el) {
       el.innerHTML = el.getAttribute('data-v2-html');
     });
+
+    /* data-v2-attr="име=вредност; друго=вредност"
+       Со ова се менуваат атрибути што ги чита некој рендерер, на пример колку
+       placeholder плочки да исцрта. Мора да се случи ПРЕД рендерерите да
+       тргнат, што и се случува: овој фајл е во <head>, тие се на дното.
+
+       Празна вредност значи БРИШЕЊЕ на атрибутот: "data-link=" го тргнува
+       `data-link`. Тоа е потребно кога копчето треба да води на друго место
+       од она што js/nav.js му го дава од контакт податоците. Без бришење,
+       nav.js подоцна би го пребришал href-от назад. */
+    Array.prototype.forEach.call(document.querySelectorAll('[data-v2-attr]'), function (el) {
+      el.getAttribute('data-v2-attr').split(';').forEach(function (pair) {
+        var i = pair.indexOf('=');
+        if (i < 1) return;
+        var name = pair.slice(0, i).trim();
+        var value = pair.slice(i + 1).trim();
+        if (value === '') el.removeAttribute(name);
+        else el.setAttribute(name, value);
+      });
+    });
+
+    // data-v2-class="класа друга-класа" — само додава, не брише постојни.
+    Array.prototype.forEach.call(document.querySelectorAll('[data-v2-class]'), function (el) {
+      el.getAttribute('data-v2-class').split(/\s+/).forEach(function (c) {
+        if (c) el.classList.add(c);
+      });
+    });
   }
 
-  /** Рецензии: во верзија 2 нема ниту една пример-картичка.
-   *  Празното место се пополнува тука, а `data-reviews` се тргнува за
-   *  js/reviews.js воопшто да не се вклучи. Така нема ни трепкање на
-   *  краткиот стандарден текст пред да се замени. */
-  function renderReviewsEmptyState() {
+  /* ===========================================================================
+     РЕЦЕНЗИИ ВО ВЕРЗИЈА 2
+     ---------------------------------------------------------------------------
+     Верзија 2 го презема целиот дел: `data-reviews` се тргнува за js/reviews.js
+     воопшто да не се вклучи, па нема трепкање на еден изглед пред другиот.
+
+     Три состојби:
+       нема ниту една рецензија → чесна порака и копче до Google
+       до три                   → сите се прикажани, мирно, без ротација
+       повеќе од три            → по три, и се менуваат на секои осум секунди
+
+     ⚠️  ЗОШТО ИМА КОПЧЕ „ПАУЗА"
+     Содржина што сама се менува мора да може да се сопре (WCAG 2.2.2). Без тоа
+     некој што чита побавно го губи текстот на средина. Ротацијата исто така
+     воопшто не се пали ако прелистувачот бара помалку движење, и запира додека
+     покажувачот или тастатурата се врз делот.
+
+     ⚠️  ЗОШТО РЕЦЕНЗИИТЕ НЕ СЕ ВЛЕЧАТ ЖИВО ОД GOOGLE
+     Статичен сајт без сервер не може да ги прочита. Google бара API клуч, а
+     клуч ставен во JavaScript на страницата е јавен за секого. Затоа тука
+     стојат рецензии внесени рачно во content/site-data.js, со вистинско име и
+     вистински текст, плус линк до профилот каде што се сите.
+     ======================================================================== */
+
+  var ROTATE_MS = 8000;
+
+  function quoteCard(r) {
+    return '<figure class="quote">' +
+             '<span class="quote__mark" aria-hidden="true">&ldquo;</span>' +
+             '<blockquote class="quote__text">' + window.PB.esc(r.text) + '</blockquote>' +
+             '<figcaption class="quote__foot">' +
+               '<span class="quote__name">' + window.PB.esc(r.name) + '</span>' +
+               (r.source ? '<span class="quote__source">преку ' + window.PB.esc(r.source) + '</span>' : '') +
+             '</figcaption>' +
+           '</figure>';
+  }
+
+  function renderReviews() {
     var wrap = document.querySelector('[data-reviews]');
-    if (!wrap) return;
+    if (!wrap || !window.PB) return;
 
-    var link = (window.SITE_V2 && window.SITE_V2.reviewsLink) || '';
-
-    var html =
-      '<div class="reviews-empty">' +
-        '<p>Рецензиите од родителите допрва се собираат на Google. ' +
-        'Тука ќе стојат само вистински, онакви какви што се напишани.</p>' +
-        (link
-          ? '<p><a class="btn btn--outline" href="' + link + '" target="_blank" rel="noopener">' +
-            'Види на Google</a></p>'
-          : '') +
-      '</div>';
-
-    wrap.innerHTML = html;
     wrap.removeAttribute('data-reviews');
     wrap.removeAttribute('data-limit');
+
+    var list = (window.SITE && window.SITE.reviews) || [];
+    var link = (window.SITE_V2 && window.SITE_V2.reviewsLink) || '';
+
+    if (!list.length) {
+      wrap.innerHTML =
+        '<div class="reviews-empty">' +
+          '<p>Рецензиите од родителите допрва се собираат на Google. ' +
+          'Тука ќе стојат само вистински, онакви какви што се напишани.</p>' +
+          (link
+            ? '<p><a class="btn btn--outline" href="' + link + '" target="_blank" rel="noopener">' +
+              'Види на Google</a></p>'
+            : '') +
+        '</div>';
+      return;
+    }
+
+    var PER = 3;
+    var page = 0;
+    var pages = Math.ceil(list.length / PER);
+
+    function slice(i) {
+      var out = [], start = i * PER;
+      for (var k = start; k < start + PER && k < list.length; k++) out.push(list[k]);
+      return out;
+    }
+
+    function paint() {
+      wrap.innerHTML = slice(page).map(quoteCard).join('');
+    }
+
+    paint();
+
+    if (pages < 2) return;
+
+    /* Читачите на екран ја објавуваат промената сами по себе, но само ако
+       делот е означен како жива област. „polite" значи: кажи го кога
+       корисникот ќе застане, не прекинувај го на средина од реченица. */
+    wrap.setAttribute('aria-live', 'polite');
+
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    var bar = document.createElement('div');
+    bar.className = 'reviews-rotate';
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'btn btn--outline btn--sm';
+    bar.appendChild(btn);
+    var status = document.createElement('span');
+    status.className = 'reviews-rotate__count';
+    bar.appendChild(status);
+    wrap.parentNode.insertBefore(bar, wrap.nextSibling);
+
+    var timer = null;
+    var playing = false;
+    var hovered = false;
+
+    function updateStatus() {
+      status.textContent = (page + 1) + ' од ' + pages;
+    }
+
+    function step() {
+      page = (page + 1) % pages;
+      paint();
+      updateStatus();
+    }
+
+    function tick() {
+      if (hovered) return;      // мирува додека некој чита
+      step();
+    }
+
+    function play() {
+      playing = true;
+      btn.textContent = 'Пауза на рецензиите';
+      btn.setAttribute('aria-pressed', 'false');
+      clearInterval(timer);
+      timer = setInterval(tick, ROTATE_MS);
+    }
+
+    function pause() {
+      playing = false;
+      btn.textContent = 'Пушти ги рецензиите';
+      btn.setAttribute('aria-pressed', 'true');
+      clearInterval(timer);
+      timer = null;
+    }
+
+    btn.addEventListener('click', function () { playing ? pause() : play(); });
+
+    ['mouseenter', 'focusin'].forEach(function (e) {
+      wrap.addEventListener(e, function () { hovered = true; });
+    });
+    ['mouseleave', 'focusout'].forEach(function (e) {
+      wrap.addEventListener(e, function () { hovered = false; });
+    });
+
+    updateStatus();
+
+    // Кој бара помалку движење, добива копче за рачно менување, не автоматско.
+    if (reduced) pause(); else play();
   }
 
   /* ===========================================================================
@@ -206,7 +395,7 @@
     if (isV2) {
       patchSiteData();
       swapMarkup();
-      renderReviewsEmptyState();
+      renderReviews();
     }
     buildSwitch();
   }
