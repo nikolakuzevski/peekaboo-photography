@@ -290,6 +290,21 @@
            '</figure>';
   }
 
+  /** Четвртото поле во мрежата: не е рецензија, туку покана да се прочитаат
+   *  сите на Google. Носи поинаква боја (data-color="cream") намерно — на
+   *  брз поглед не смее да се помеша со вистинска рецензија. Ако нема линк
+   *  (реrviewsLink е празен), полето воопшто не се прикажува — копче што
+   *  никаде не води е полошо од копче што го нема. */
+  function moreCard(link) {
+    if (!link) return '';
+    return '<div class="reviews-more" data-color="cream">' +
+             '<p class="reviews-more__text">Ова се само неколку. Прочитајте ги сите рецензии на Google.</p>' +
+             '<a class="btn btn--outline" href="' + link + '" target="_blank" rel="noopener">' +
+               'Види повеќе <span class="btn__arrow" aria-hidden="true">&rarr;</span>' +
+             '</a>' +
+           '</div>';
+  }
+
   /** Отвора и затвора една скратена рецензија.
    *  Слушателот стои на контејнерот, не на копчето: картичките се
    *  прецртуваат при ротација, па слушател на самото копче би исчезнал
@@ -347,7 +362,7 @@
     }
 
     function paint() {
-      wrap.innerHTML = slice(page).map(quoteCard).join('');
+      wrap.innerHTML = slice(page).map(quoteCard).join('') + moreCard(link);
     }
 
     paint();

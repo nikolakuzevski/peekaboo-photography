@@ -135,6 +135,39 @@ html[data-version="2"] .quote__more:hover { text-decoration-thickness: 2px; }
 /* Отворената картичка не смее да ги растегне соседните во мрежата. */
 html[data-version="2"] .quote { align-self: start; }
 
+/* -----------------------------------------------------------------------------
+   ЧЕТВРТО ПОЛЕ: „ВИДИ ПОВЕЌЕ"
+   Не е рецензија — е покана да се прочитаат сите на Google. data-color="cream"
+   (генериран во js/version.js, moreCard()) намерно ѝ дава поинаква боја од
+   белите картички со рецензии, за да не се помеша со вистинска на брз поглед.
+   На широк екран зазема цел ред под трите рецензии; на телефон е уште еден
+   слајд во истиот хоризонтален скрол, со иста ширина како рецензиите.
+   -------------------------------------------------------------------------- */
+html[data-version="2"] .reviews-more {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: var(--space-4);
+  padding: var(--space-6);
+  border-radius: var(--r-lg);
+  background: var(--tone-bg);
+  color: var(--tone-fg);
+  box-shadow: var(--shadow-sm);
+}
+html[data-version="2"] .reviews-more__text { margin: 0; font-size: var(--fs-lead); }
+
+@media (min-width: 900px) {
+  html[data-version="2"] .reviews-more {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-6);
+  }
+  html[data-version="2"] .reviews-more__text { max-width: 44ch; }
+}
+
 /* Лентата под ротирачките рецензии: копче за пауза и бројач. */
 .reviews-rotate {
   display: flex;
