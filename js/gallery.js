@@ -118,7 +118,6 @@
       if (!box) return;
 
       var imgEl = box.querySelector('.lightbox__img');
-      var capEl = box.querySelector('.lightbox__caption');
       var cntEl = box.querySelector('.lightbox__count');
       var btnPrev = box.querySelector('[data-lb="prev"]');
       var btnNext = box.querySelector('[data-lb="next"]');
@@ -156,8 +155,9 @@
         var item = list[idx];
         if (!item) return;
         imgEl.src = item.src;
+        // alt останува за читачи на екран и за SEO, но НЕ се прикажува како
+        // видлив опис под сликата — клиентот не побара текст под сликите.
         imgEl.alt = item.alt || '';
-        capEl.textContent = item.alt || '';
         cntEl.textContent = (idx + 1) + ' / ' + list.length;
         var many = list.length > 1;
         btnPrev.hidden = !many;
