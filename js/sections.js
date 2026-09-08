@@ -34,11 +34,23 @@
      ---------------------------------------------------------------------------
      Празно `hero.images` = си останува HTML-от од index.html, недопрен
      (брендирана placeholder плочка). Една слика = статична слика. Две или
-     повеќе = слајдер: се менува на секои 5с, копче „Пауза" (WCAG 2.2.2 —
-     содржина што сама се менува мора да може да се сопре), стрелки
-     лево/десно, точки, застанува кога покажувачот или фокусот е врз неа, и
-     не се пали автоматски ако прелистувачот бара помалку движење. Истиот
-     принцип како ротацијата на рецензиите во js/version.js.
+     повеќе = слајдер.
+
+     ВЕРЗИЈА 1 (`data-version` != "2"): се менува на секои 5с, копче „Пауза"
+     (WCAG 2.2.2 — содржина што сама се менува мора да може да се сопре),
+     стрелки лево/десно, точки, застанува кога покажувачот или фокусот е врз
+     неа, не се пали автоматски ако прелистувачот бара помалку движење.
+
+     ВЕРЗИЈА 2 (`data-version` == "2"): по барање на клиентот — гола слика без
+     лента (нема стрелки, точки, копче „Пауза", ни црн градиент). Целата слика
+     е кликлива и оди на следната; сама се менува на секои 3с ако никој не ја
+     допира. Автоматското менување паузира додека покажувачот или тастатурниот
+     фокус е врз сликата (тоа е механизмот за сопирање наместо копчето), и не
+     се пали ако прелистувачот бара помалку движење. Тастатура: слајдерот е
+     фокусибилен, Enter/Space оди на следната.
+
+     Верзијата се чита од `document.documentElement` — js/version.js го
+     поставува `data-version` синхроно во <head>, долго пред овој код.
      ------------------------------------------------------------------------ */
   function renderHero(S) {
     var mount = document.querySelector('[data-hero-slider]');
@@ -52,44 +64,56 @@
       return;
     }
 
-    mount.innerHTML =
-      '<div class="hero-slider" role="region" aria-roledescription="слајдер" aria-label="Главни фотографии">' +
-        images.map(function (img, i) {
-          return '<figure class="hero-slider__slide' + (i === 0 ? ' is-active' : '') + '" ' +
-                   'aria-hidden="' + (i === 0 ? 'false' : 'true') + '">' +
-                   '<img src="' + window.PB.esc(img.src) + '" alt="' + window.PB.esc(img.alt || '') + '" ' +
-                   (i === 0 ? '' : 'loading="lazy" ') + 'decoding="async">' +
-                 '</figure>';
-        }).join('') +
-        '<div class="hero-slider__bar">' +
-          '<button type="button" class="hero-slider__nav hero-slider__nav--prev" aria-label="Претходна слика">' +
-            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" ' +
-            'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>' +
-          '</button>' +
-          '<div class="hero-slider__dots">' +
-            images.map(function (_, i) {
-              return '<button type="button" class="hero-slider__dot' + (i === 0 ? ' is-active' : '') + '" ' +
-                       'aria-label="Слика ' + (i + 1) + ' од ' + images.length + '" ' +
-                       'aria-current="' + (i === 0 ? 'true' : 'false') + '"></button>';
-            }).join('') +
-          '</div>' +
-          '<button type="button" class="hero-slider__nav hero-slider__nav--next" aria-label="Следна слика">' +
-            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" ' +
-            'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>' +
-          '</button>' +
-          '<button type="button" class="hero-slider__pause" aria-pressed="false"></button>' +
-        '</div>' +
-      '</div>';
+    var bare = document.documentElement.getAttribute('data-version') === '2';
 
-    bindHeroSlider(mount, images.length);
+    var slidesHtml = images.map(function (img, i) {
+      return '<figure class="hero-slider__slide' + (i === 0 ? ' is-active' : '') + '" ' +
+               'aria-hidden="' + (i === 0 ? 'false' : 'true') + '">' +
+               '<img src="' + window.PB.esc(img.src) + '" alt="' + window.PB.esc(img.alt || '') + '" ' +
+               (i === 0 ? '' : 'loading="lazy" ') + 'decoding="async">' +
+             '</figure>';
+    }).join('');
+
+    if (bare) {
+      mount.innerHTML =
+        '<div class="hero-slider hero-slider--bare" role="button" tabindex="0" ' +
+          'aria-roledescription="слајдер" aria-label="Фотографии — притисни за следната">' +
+          slidesHtml +
+        '</div>';
+    } else {
+      mount.innerHTML =
+        '<div class="hero-slider" role="region" aria-roledescription="слајдер" aria-label="Главни фотографии">' +
+          slidesHtml +
+          '<div class="hero-slider__bar">' +
+            '<button type="button" class="hero-slider__nav hero-slider__nav--prev" aria-label="Претходна слика">' +
+              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" ' +
+              'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>' +
+            '</button>' +
+            '<div class="hero-slider__dots">' +
+              images.map(function (_, i) {
+                return '<button type="button" class="hero-slider__dot' + (i === 0 ? ' is-active' : '') + '" ' +
+                         'aria-label="Слика ' + (i + 1) + ' од ' + images.length + '" ' +
+                         'aria-current="' + (i === 0 ? 'true' : 'false') + '"></button>';
+              }).join('') +
+            '</div>' +
+            '<button type="button" class="hero-slider__nav hero-slider__nav--next" aria-label="Следна слика">' +
+              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" ' +
+              'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>' +
+            '</button>' +
+            '<button type="button" class="hero-slider__pause" aria-pressed="false"></button>' +
+          '</div>' +
+        '</div>';
+    }
+
+    bindHeroSlider(mount, images.length, bare);
   }
 
-  function bindHeroSlider(mount, count) {
+  function bindHeroSlider(mount, count, bare) {
     var root = mount.querySelector('.hero-slider');
     var slides = mount.querySelectorAll('.hero-slider__slide');
     var dots = mount.querySelectorAll('.hero-slider__dot');
     var pauseBtn = mount.querySelector('.hero-slider__pause');
-    var MS = 5000;
+    var MS = bare ? 3000 : 5000;
     var index = 0, timer = null, playing = false, hovered = false;
     var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -111,29 +135,46 @@
 
     function play() {
       playing = true;
-      pauseBtn.textContent = 'Пауза';
-      pauseBtn.setAttribute('aria-pressed', 'false');
+      if (pauseBtn) {
+        pauseBtn.textContent = 'Пауза';
+        pauseBtn.setAttribute('aria-pressed', 'false');
+      }
       clearInterval(timer);
       timer = setInterval(tick, MS);
     }
     function pause() {
       playing = false;
-      pauseBtn.textContent = 'Пушти';
-      pauseBtn.setAttribute('aria-pressed', 'true');
+      if (pauseBtn) {
+        pauseBtn.textContent = 'Пушти';
+        pauseBtn.setAttribute('aria-pressed', 'true');
+      }
       clearInterval(timer);
       timer = null;
     }
 
-    mount.querySelector('.hero-slider__nav--next').addEventListener('click', function () {
-      show(index + 1); if (playing) play();
-    });
-    mount.querySelector('.hero-slider__nav--prev').addEventListener('click', function () {
-      show(index - 1); if (playing) play();
-    });
-    dots.forEach(function (d, i) {
-      d.addEventListener('click', function () { show(i); if (playing) play(); });
-    });
-    pauseBtn.addEventListener('click', function () { playing ? pause() : play(); });
+    function advance() { show(index + 1); if (playing) play(); }
+
+    if (bare) {
+      // Клик било каде на сликата → следна. Тастатура (Enter/Space) → исто.
+      root.addEventListener('click', advance);
+      root.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
+          e.preventDefault();
+          advance();
+        }
+      });
+    } else {
+      mount.querySelector('.hero-slider__nav--next').addEventListener('click', function () {
+        show(index + 1); if (playing) play();
+      });
+      mount.querySelector('.hero-slider__nav--prev').addEventListener('click', function () {
+        show(index - 1); if (playing) play();
+      });
+      dots.forEach(function (d, i) {
+        d.addEventListener('click', function () { show(i); if (playing) play(); });
+      });
+      pauseBtn.addEventListener('click', function () { playing ? pause() : play(); });
+    }
 
     ['mouseenter', 'focusin'].forEach(function (e) { root.addEventListener(e, function () { hovered = true; }); });
     ['mouseleave', 'focusout'].forEach(function (e) { root.addEventListener(e, function () { hovered = false; }); });
