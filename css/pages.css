@@ -74,6 +74,112 @@
   box-shadow: var(--shadow-lg);
 }
 .hero__figure > * { width: 100%; height: 100%; }
+/* [data-hero-slider] е уште едно ниво длабоко (JS ја вметнува .hero-slider
+   внатре во него) — истото 100%/100% мора да продолжи и таму, инаку
+   слајдерот не го пополнува лакот. */
+[data-hero-slider] { display: block; }
+[data-hero-slider] > * { width: 100%; height: 100%; }
+
+/* -----------------------------------------------------------------------------
+   HERO СЛАЈДЕР
+   Слики една врз друга (позиционирани apsolutно), меко се менуваат со
+   opacity. Лентата со копчиња седи преку долниот раб, со засенчување за
+   читливост врз било која фотографија — истата постапка како
+   .photo-grid__caption погоре.
+   -------------------------------------------------------------------------- */
+.hero-slider { position: relative; overflow: hidden; }
+
+.hero-slider__slide {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  transition: opacity 600ms var(--ease-out);
+}
+.hero-slider__slide.is-active { opacity: 1; z-index: 1; }
+.hero-slider__slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.hero-slider__bar {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  padding: var(--space-6) var(--space-4) var(--space-4);
+  /* Двоенستоп, не проста линеарна опаѓачка засенка: копчињата мора да
+     седат на РАМНОМЕРНО темна подлога (0.72), инаку белиот текст паѓа под
+     4.5:1 врз светла фотографија (проверено: 4.2:1 со проста 0.55 засенка
+     и бела позадина, најлошиот случај). Само над лентата, каде нема текст,
+     засенката се стопува во проѕирност за мек премин кон сликата. */
+  background: linear-gradient(to top,
+    rgba(16, 16, 18, 0.72) 0%,
+    rgba(16, 16, 18, 0.72) 65%,
+    transparent 100%);
+}
+
+.hero-slider__nav {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px; height: 40px;
+  flex-shrink: 0;
+  border-radius: var(--r-pill);
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+.hero-slider__nav:hover { background: rgba(255, 255, 255, 0.36); }
+.hero-slider__nav svg { width: 20px; height: 20px; }
+
+.hero-slider__dots { display: flex; align-items: center; gap: var(--space-2); }
+.hero-slider__dot {
+  width: 20px; height: 20px;   /* самото копче е 20px, но тап-целта е 44px преку ::after */
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.hero-slider__dot::before {
+  content: '';
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.55);
+  transition: background-color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+}
+.hero-slider__dot.is-active::before { background: #fff; transform: scale(1.3); }
+.hero-slider__dot::after {
+  /* Невидлива, но 44×44px тап-цел преку самата точка — точката сама по себе
+     е намерно ситна, за да не изгледа како копче со текст. */
+  content: '';
+  position: absolute;
+  inset: -12px;
+}
+
+.hero-slider__pause {
+  min-height: 32px;
+  padding: 0 var(--space-3);
+  border-radius: var(--r-pill);
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+  font-size: var(--fs-small);
+  font-weight: 700;
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+.hero-slider__pause:hover { background: rgba(255, 255, 255, 0.36); }
+
+@media (max-width: 480px) {
+  /* На тесен екран копчето „Пауза" го зема истиот простор како точките —
+     стои под нив, не стиснато во истиот ред. */
+  .hero-slider__bar { flex-wrap: wrap; row-gap: var(--space-2); }
+  .hero-slider__pause { order: 1; flex-basis: 100%; text-align: center; }
+}
+
+/* Стои врз фотографија, не врз позната лента-боја од data-color системот —
+   истиот бел прстен-исклучок што веќе постои за data-color="purple"/"blue"
+   во base.css, само тука изречно именуван. */
+.hero-slider :focus-visible { outline-color: #FFFFFF; }
 
 /* -----------------------------------------------------------------------------
    ЛЕНТА СО ВРЕДНОСТИ

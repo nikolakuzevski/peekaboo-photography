@@ -16,6 +16,7 @@
     var S = window.SITE;
     if (!S) return;
 
+    renderHero(S);
     renderServiceCards(S);
     renderServiceBlocks(S);
     renderPortfolioTeaser(S);
@@ -26,6 +27,118 @@
     // Новововметнатата содржина мора да се пријави за влезна анимација,
     // инаку останува засекогаш на opacity 0.
     if (window.PBReveal) window.PBReveal.scan();
+  }
+
+  /* ---------------------------------------------------------------------------
+     HERO — главната слика на почетната страница
+     ---------------------------------------------------------------------------
+     Празно `hero.images` = си останува HTML-от од index.html, недопрен
+     (брендирана placeholder плочка). Една слика = статична слика. Две или
+     повеќе = слајдер: се менува на секои 5с, копче „Пауза" (WCAG 2.2.2 —
+     содржина што сама се менува мора да може да се сопре), стрелки
+     лево/десно, точки, застанува кога покажувачот или фокусот е врз неа, и
+     не се пали автоматски ако прелистувачот бара помалку движење. Истиот
+     принцип како ротацијата на рецензиите во js/version.js.
+     ------------------------------------------------------------------------ */
+  function renderHero(S) {
+    var mount = document.querySelector('[data-hero-slider]');
+    if (!mount || !window.PB) return;
+
+    var images = (S.hero && S.hero.images) || [];
+    if (!images.length) return; // го задржува постојниот HTML placeholder
+
+    if (images.length === 1) {
+      mount.innerHTML = window.PB.slot(images[0], { ratio: '4 / 5' });
+      return;
+    }
+
+    mount.innerHTML =
+      '<div class="hero-slider" role="region" aria-roledescription="слајдер" aria-label="Главни фотографии">' +
+        images.map(function (img, i) {
+          return '<figure class="hero-slider__slide' + (i === 0 ? ' is-active' : '') + '" ' +
+                   'aria-hidden="' + (i === 0 ? 'false' : 'true') + '">' +
+                   '<img src="' + window.PB.esc(img.src) + '" alt="' + window.PB.esc(img.alt || '') + '" ' +
+                   (i === 0 ? '' : 'loading="lazy" ') + 'decoding="async">' +
+                 '</figure>';
+        }).join('') +
+        '<div class="hero-slider__bar">' +
+          '<button type="button" class="hero-slider__nav hero-slider__nav--prev" aria-label="Претходна слика">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" ' +
+            'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>' +
+          '</button>' +
+          '<div class="hero-slider__dots">' +
+            images.map(function (_, i) {
+              return '<button type="button" class="hero-slider__dot' + (i === 0 ? ' is-active' : '') + '" ' +
+                       'aria-label="Слика ' + (i + 1) + ' од ' + images.length + '" ' +
+                       'aria-current="' + (i === 0 ? 'true' : 'false') + '"></button>';
+            }).join('') +
+          '</div>' +
+          '<button type="button" class="hero-slider__nav hero-slider__nav--next" aria-label="Следна слика">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" ' +
+            'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>' +
+          '</button>' +
+          '<button type="button" class="hero-slider__pause" aria-pressed="false"></button>' +
+        '</div>' +
+      '</div>';
+
+    bindHeroSlider(mount, images.length);
+  }
+
+  function bindHeroSlider(mount, count) {
+    var root = mount.querySelector('.hero-slider');
+    var slides = mount.querySelectorAll('.hero-slider__slide');
+    var dots = mount.querySelectorAll('.hero-slider__dot');
+    var pauseBtn = mount.querySelector('.hero-slider__pause');
+    var MS = 5000;
+    var index = 0, timer = null, playing = false, hovered = false;
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function show(i) {
+      index = (i + count) % count;
+      slides.forEach(function (s, k) {
+        var on = k === index;
+        s.classList.toggle('is-active', on);
+        s.setAttribute('aria-hidden', on ? 'false' : 'true');
+      });
+      dots.forEach(function (d, k) {
+        var on = k === index;
+        d.classList.toggle('is-active', on);
+        d.setAttribute('aria-current', on ? 'true' : 'false');
+      });
+    }
+
+    function tick() { if (!hovered) show(index + 1); }
+
+    function play() {
+      playing = true;
+      pauseBtn.textContent = 'Пауза';
+      pauseBtn.setAttribute('aria-pressed', 'false');
+      clearInterval(timer);
+      timer = setInterval(tick, MS);
+    }
+    function pause() {
+      playing = false;
+      pauseBtn.textContent = 'Пушти';
+      pauseBtn.setAttribute('aria-pressed', 'true');
+      clearInterval(timer);
+      timer = null;
+    }
+
+    mount.querySelector('.hero-slider__nav--next').addEventListener('click', function () {
+      show(index + 1); if (playing) play();
+    });
+    mount.querySelector('.hero-slider__nav--prev').addEventListener('click', function () {
+      show(index - 1); if (playing) play();
+    });
+    dots.forEach(function (d, i) {
+      d.addEventListener('click', function () { show(i); if (playing) play(); });
+    });
+    pauseBtn.addEventListener('click', function () { playing ? pause() : play(); });
+
+    ['mouseenter', 'focusin'].forEach(function (e) { root.addEventListener(e, function () { hovered = true; }); });
+    ['mouseleave', 'focusout'].forEach(function (e) { root.addEventListener(e, function () { hovered = false; }); });
+
+    if (reduced) pause(); else play();
   }
 
   /* ---------------------------------------------------------------------------
@@ -40,10 +153,15 @@
     // во components.css). Така тап-целта е цела картичка, а структурата на
     // насловите останува исправна за Google и за читачите на екран.
     wrap.innerHTML = (S.services || []).map(function (s) {
+      // Малата картичка може да носи своја слика (teaserImage), различна од
+      // онаа на целосниот блок на страницата „Услуги" — паѓа назад на
+      // истата (`image`) ако teaserImage не е поставена.
+      var img = s.teaserImage || s.image;
+      var alt = s.teaserImage ? s.teaserImageAlt : s.imageAlt;
       return '<article class="card" data-color="' + window.PB.esc(s.color) + '" data-reveal>' +
                '<div class="card__media">' +
                  window.PB.slot(
-                   s.image ? { src: s.image, alt: s.imageAlt } : null,
+                   img ? { src: img, alt: alt } : null,
                    { ratio: "4 / 3", tone: s.color }
                  ) +
                '</div>' +
