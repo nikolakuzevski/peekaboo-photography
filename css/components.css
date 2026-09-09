@@ -503,7 +503,11 @@
   inset: 0;
   z-index: var(--z-lightbox);
   display: grid;
-  grid-template-rows: auto 1fr auto;
+  /* minmax(0, 1fr), не 1fr: обичното 1fr = minmax(auto, 1fr), па редот со
+     сликата растеше до полната висина на портретна фотографија и ја туркаше
+     под лентата со стрелки (сликата излегуваше „полукропната"). Со minmax(0,…)
+     редот останува ограничен на екранот и max-height:100% на сликата важи. */
+  grid-template-rows: auto minmax(0, 1fr) auto;
   padding: var(--space-4);
   background: rgba(30, 22, 38, 0.94);
   opacity: 0;
@@ -519,15 +523,22 @@
 .lightbox__bar { display: flex; justify-content: flex-end; }
 
 .lightbox__stage {
-  display: grid;
-  place-items: center;
+  /* flex, не grid: кај grid, единствениот имплицитен ред е `auto` и растеше
+     до полната висина на сликата, па max-height:100% на сликата се мереше
+     според тој преголем ред. Кај flex со дефинирана висина, max-height:100%
+     на сликата важи спрема самиот stage. */
+  display: flex;
+  align-items: center;
+  justify-content: center;
   min-height: 0;
+  overflow: hidden;
   padding: var(--space-2);
 }
 .lightbox__img {
   max-width: min(100%, 1100px);
   max-height: 100%;
   width: auto;
+  height: auto;
   border-radius: var(--r-md);
   opacity: 0;
   transform: scale(0.96);
