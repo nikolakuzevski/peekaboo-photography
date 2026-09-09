@@ -132,6 +132,20 @@ window.SITE_V2 = {
         ],
         color: 'yellow'
       }
+    ],
+
+    /* ВИДЕА — само во верзија 2.
+       Верзија 1 нема ниту едно видео (site-data.js: `videos: []`), па таму си
+       остануваат placeholder плочките. Сите се сопствени MP4 фајлови во
+       images/videos/, снимени вертикално (9:16) — токму форматот што го бара
+       верзија 2 (`data-ratio="9 / 16"`). Без постер: js/videos.js црта
+       брендирана плочка со копче за пуштање додека не се кликне. */
+    videos: [
+      { type: 'mp4', src: 'images/videos/01.mp4', title: 'Видео 1' },
+      { type: 'mp4', src: 'images/videos/02.mp4', title: 'Видео 2' },
+      { type: 'mp4', src: 'images/videos/03.mp4', title: 'Видео 3' },
+      { type: 'mp4', src: 'images/videos/04.mp4', title: 'Видео 4' },
+      { type: 'mp4', src: 'images/videos/05.mp4', title: 'Видео 5' }
     ]
   },
 

@@ -17,6 +17,13 @@
 
     var list = (window.SITE && window.SITE.videos) || [];
 
+    /* data-limit="N" — тизерот на почетната прикажува само првите N видеа, а
+       под нив стои „Види ги сите видеа". Страницата „Видеа" нема data-limit,
+       па ги прикажува сите. Не важи за placeholder состојбата (таа си има
+       data-placeholder-count). */
+    var limit = parseInt(wrap.getAttribute('data-limit'), 10);
+    if (limit > 0) list = list.slice(0, limit);
+
     /* Односот на страни доаѓа од HTML-от: хоризонтално 16/9 е default, а
        вертикално 9/16 е за Reels-формат. Плочката и вистинскиот плеер го
        делат истиот однос, па ништо не се поместува кога видеото ќе слета. */
