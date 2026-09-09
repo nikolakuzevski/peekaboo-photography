@@ -54,6 +54,8 @@
 
     if (window.PBReveal) window.PBReveal.scan();
 
+    setupInlineVideos(wrap);
+
     wrap.addEventListener('click', function (e) {
       var btn = e.target.closest('[data-play]');
       if (!btn) return;
@@ -66,9 +68,26 @@
     });
   }
 
-  /* Постер + копче за пуштање. Ништо од трети страни не се вчитува уште. */
+  /* MP4 = се врти само по себе, тивко, во круг. YouTube/Instagram = facade
+     (постер + копче за пуштање, ништо од трети страни не се вчитува уште). */
   function card(v, ratio) {
     var title = window.PB.esc(v.title || 'Видео');
+
+    if (v.type === 'mp4') {
+      /* autoplay+muted+loop+playsinline: се пушта без клик и се повторува.
+         `controls` дава копче за цел екран; звукот се пали на цел екран
+         (setupInlineVideos) или преку самите контроли. `background:#000`
+         спречува блесок додека се вчитува првиот кадар. */
+      return '<video class="video-card__video" autoplay muted loop playsinline ' +
+               'controls preload="metadata" ' +
+               (v.poster ? 'poster="' + window.PB.esc(v.poster) + '" ' : '') +
+               'aria-label="' + title + '">' +
+               '<source src="' + window.PB.esc(v.src) + '" type="video/mp4">' +
+               'Вашиот прелистувач не поддржува видео.' +
+             '</video>' +
+             '<p class="video-card__title">' + title + '</p>';
+    }
+
     var poster = v.poster ||
       (v.type === 'youtube' && v.id ? 'https://i.ytimg.com/vi/' + v.id + '/hqdefault.jpg' : '');
 
@@ -84,6 +103,48 @@
              '</span>' +
            '</button>' +
            '<p class="video-card__title">' + title + '</p>';
+  }
+
+  /* Инлајн MP4 видеата: тивки додека се вртат во мрежата, добиваат звук само
+     кога се на цел екран, и мируваат кога не се на екран за да не трошат
+     интернет и батерија. */
+  function setupInlineVideos(wrap) {
+    var vids = wrap.querySelectorAll('.video-card__video');
+    if (!vids.length) return;
+
+    function fsNode() {
+      return document.fullscreenElement || document.webkitFullscreenElement || null;
+    }
+    function syncSound() {
+      var fs = fsNode();
+      Array.prototype.forEach.call(vids, function (v) {
+        // Со звук само она видео што е точно на цел екран; сите други тивки.
+        v.muted = !(fs && (fs === v || (fs.contains && fs.contains(v))));
+      });
+    }
+    document.addEventListener('fullscreenchange', syncSound);
+    document.addEventListener('webkitfullscreenchange', syncSound);
+
+    // iOS Safari: видеото оди во сопствен плеер, овие настани се на елементот.
+    Array.prototype.forEach.call(vids, function (v) {
+      v.addEventListener('webkitbeginfullscreen', function () { v.muted = false; });
+      v.addEventListener('webkitendfullscreen', function () { v.muted = true; });
+    });
+
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          var v = en.target;
+          if (en.isIntersecting) {
+            var p = v.play();
+            if (p && p.catch) p.catch(function () {});
+          } else if (!fsNode()) {
+            v.pause();
+          }
+        });
+      }, { threshold: 0.2 });
+      Array.prototype.forEach.call(vids, function (v) { io.observe(v); });
+    }
   }
 
   /* Вистинскиот плеер — се создава дури на клик. */

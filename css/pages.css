@@ -404,6 +404,7 @@
 
 .video-card iframe,
 .video-card video { width: 100%; aspect-ratio: var(--video-ratio); height: auto; display: block; }
+.video-card video { object-fit: cover; background: #000; }
 
 /* -----------------------------------------------------------------------------
    РЕЦЕНЗИИ
