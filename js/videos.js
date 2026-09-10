@@ -79,14 +79,15 @@
          не останува неуловена AbortError кога прегледот паузира тивко видео).
          `controls` дава копче за цел екран; звукот се пали на цел екран
          (setupInlineVideos) или преку самите контроли. */
+      // Без наслов под видеото — целото прозорче е самото видео (по барање
+      // на клиентот). `title` останува само за aria-label.
       return '<video class="video-card__video" muted loop playsinline ' +
                'controls preload="metadata" ' +
                (v.poster ? 'poster="' + window.PB.esc(v.poster) + '" ' : '') +
                'aria-label="' + title + '">' +
                '<source src="' + window.PB.esc(v.src) + '" type="video/mp4">' +
                'Вашиот прелистувач не поддржува видео.' +
-             '</video>' +
-             '<p class="video-card__title">' + title + '</p>';
+             '</video>';
     }
 
     var poster = v.poster ||
