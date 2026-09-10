@@ -324,18 +324,26 @@
        седи намерно наместо да изгледа залепена. */
     var portrait = document.querySelector('[data-about-portrait]');
     if (portrait) {
-      var hasCutout = !!(a.portrait && a.portraitCutout);
+      // Тизерот на почетната (.split__media) носи своја, рамкирана слика
+      // (about.home.portrait); херојот на страницата „За мене"
+      // (.about-hero__portrait) ја носи исечената слика што го преклопува името
+      // (about.portrait + about.portraitCutout).
+      var onHome = portrait.classList.contains('split__media');
+      var pSrc = onHome ? ((a.home && a.home.portrait) || '') : (a.portrait || '');
+      var pAlt = onHome ? (a.home && a.home.portraitAlt) : a.portraitAlt;
+      var hasCutout = !onHome && !!(a.portrait && a.portraitCutout);
+
       portrait.classList.add(hasCutout
         ? 'about-hero__portrait--cutout'
         : 'about-hero__portrait--framed');
 
       if (hasCutout) {
-        portrait.innerHTML = '<img src="' + window.PB.esc(a.portrait) + '" ' +
-          'alt="' + window.PB.esc(a.portraitAlt || 'Портрет на фотографот') + '" ' +
+        portrait.innerHTML = '<img src="' + window.PB.esc(pSrc) + '" ' +
+          'alt="' + window.PB.esc(pAlt || 'Портрет на фотографот') + '" ' +
           'decoding="async">';
       } else {
         portrait.innerHTML = window.PB.slot(
-          a.portrait ? { src: a.portrait, alt: a.portraitAlt || 'Портрет на фотографот' } : null,
+          pSrc ? { src: pSrc, alt: pAlt || 'Портрет на фотографот' } : null,
           { ratio: '4 / 5', tone: 'cream', label: 'Портрет на фотографот' }
         );
       }
