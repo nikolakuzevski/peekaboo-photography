@@ -255,6 +255,15 @@
 }
 .checklist svg { flex-shrink: 0; width: 22px; height: 22px; margin-top: 2px; }
 
+/* Целиот блок се центрира на екранот, но редовите остануваат порамнети лево
+   (икона па текст) — само на местата каде списокот стои сам, без слика до него. */
+.checklist--centered {
+  width: fit-content;
+  max-width: 100%;
+  margin-inline: auto;
+  text-align: left;
+}
+
 /* -----------------------------------------------------------------------------
    ГАЛЕРИЈА
    Masonry преку CSS columns — без JS, без библиотека.

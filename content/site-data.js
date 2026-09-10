@@ -72,7 +72,7 @@ window.SITE = {
 
     // Адреса на студиото
     address: 'ул. Мечкин Камен бр. 23, Ѓорче Петров, Скопје',
-    city: 'Скопје, Северна Македонија',
+    city: 'Скопје, Македонија',
 
     // Google Maps
     mapsLink: 'https://maps.app.goo.gl/mPg23XMmAj8mZpRq7',
