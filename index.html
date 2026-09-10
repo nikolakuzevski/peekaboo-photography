@@ -10,9 +10,7 @@
      пребарување за вистински бизнис. Кога сајтот е готов, избриши го
      редот со name="robots" подолу. -->
 <meta name="robots" content="noindex, nofollow">
-<title>Peek A'Boo Photography — детска фотографија во Скопје</title>
-<!-- ВЕРЗИЈА 2: наслов без долга црта. Се брише пред објавување. -->
-<meta name="v2:title" content="Детска и семејна фотографија во Скопје | Peek A'Boo Photography">
+<title>Детска и семејна фотографија во Скопје | Peek A'Boo Photography</title>
 <meta name="description" content="Детска и семејна фотографија во Скопје. Крштевки, фотосесии за новороденчиња и семејства, видео. Опуштени сесии без брзање и без принудни пози.">
 <link rel="canonical" href="https://nikolakuzevski.github.io/peekaboo-photography/">
 
@@ -35,16 +33,9 @@
 <link rel="stylesheet" href="css/components.css">
 <link rel="stylesheet" href="css/pages.css">
 
-<!-- ВЕРЗИЈА 2: се брише пред објавување заедно со js/version.js -->
-<link rel="stylesheet" href="css/theme-v2.css">
-
 <!-- Мора да е тука, без defer: ја додава класата што ги крие reveal елементите
      пред првото исцртување. Ако не се вчита, содржината останува видлива. -->
 <script src="js/reveal.js"></script>
-
-<!-- ВЕРЗИЈА 2: прекинувач за споредба. Се брише пред објавување. -->
-<script src="content/site-data-v2.js"></script>
-<script src="js/version.js"></script>
 
 <script type="application/ld+json">
 {
@@ -124,11 +115,6 @@
 
     <div class="container hero__grid">
       <div data-reveal-group>
-        <!-- data-v2-hide: клиентот побара „Детска фотографија · Скопје" да
-             го нема над насловот во верзија 2. -->
-        <p class="eyebrow eyebrow--script" data-reveal data-v2-hide>Детска фотографија · Скопје</p>
-        <!-- Насловот е вратен на оригиналниот текст од верзија 1 по барање
-             на клиентот — нема веќе data-v2 замена тука. -->
         <h1 class="hero__title" data-reveal>
           Тие растат <br class="br-lg">побрзо од <br class="br-lg"><em>што мислиш.</em>
         </h1>
@@ -265,11 +251,10 @@
         </p>
       </div>
 
-      <!-- Во верзија 2 тука се врти првите четири видеа (се пуштаат тивко сами
-           по себе). Сите пет се на страницата „Видеа". -->
+      <!-- Тука се вртат првите четири видеа (се пуштаат тивко сами по себе).
+           Сите пет се на страницата „Видеа". -->
       <div class="videos__grid videos__grid--vertical" data-videos data-ratio="9 / 16"
-           data-placeholder-count="3"
-           data-v2-attr="data-placeholder-count=4; data-limit=4"
+           data-placeholder-count="4" data-limit="4"
            data-reveal-group></div>
 
       <p style="margin-top:var(--space-7)">
