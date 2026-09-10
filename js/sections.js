@@ -23,10 +23,22 @@
     renderAbout(S);
     renderContact(S);
     fitMarkedHeadings();
+    startFrameVideos();
 
     // Новововметнатата содржина мора да се пријави за влезна анимација,
     // инаку останува засекогаш на opacity 0.
     if (window.PBReveal) window.PBReveal.scan();
+  }
+
+  /* Видеата во слот (услуги, тизери) се пуштаат тивко во круг. Стартот е тука,
+     не преку `autoplay`, за да ја фатиме евентуалната AbortError кога
+     прелистувачот паузира тивко видео (пр. таб во позадина). */
+  function startFrameVideos() {
+    var vids = document.querySelectorAll('.frame > video');
+    Array.prototype.forEach.call(vids, function (v) {
+      var p = v.play();
+      if (p && p.catch) p.catch(function () {});
+    });
   }
 
   /* ---------------------------------------------------------------------------
@@ -196,15 +208,17 @@
     wrap.innerHTML = (S.services || []).map(function (s) {
       // Малата картичка може да носи своја слика (teaserImage), различна од
       // онаа на целосниот блок на страницата „Услуги" — паѓа назад на
-      // истата (`image`) ако teaserImage не е поставена.
+      // истата (`image`) ако teaserImage не е поставена. Ако е зададено
+      // `teaserVideo`, во слотот се врти видео наместо слика (без контроли —
+      // цела картичка е линк кон страницата „Услуги").
       var img = s.teaserImage || s.image;
       var alt = s.teaserImage ? s.teaserImageAlt : s.imageAlt;
+      var media = s.teaserVideo
+        ? { video: s.teaserVideo, alt: s.teaserVideoAlt }
+        : (img ? { src: img, alt: alt } : null);
       return '<article class="card" data-color="' + window.PB.esc(s.color) + '" data-reveal>' +
                '<div class="card__media">' +
-                 window.PB.slot(
-                   img ? { src: img, alt: alt } : null,
-                   { ratio: "4 / 3", tone: s.color }
-                 ) +
+                 window.PB.slot(media, { ratio: "4 / 3", tone: s.color }) +
                '</div>' +
                '<div class="card__body">' +
                  '<h3 class="card__title">' + window.PB.esc(s.title) + '</h3>' +
@@ -235,8 +249,10 @@
                  '<div class="service-block__grid">' +
                    '<div class="service-block__media" data-reveal>' +
                      window.PB.slot(
-                       s.image ? { src: s.image, alt: s.imageAlt } : null,
-                       { ratio: "4 / 5", tone: s.color, radius: "999px 999px 24px 24px" }
+                       s.blockVideo
+                         ? { video: s.blockVideo, alt: s.blockVideoAlt }
+                         : (s.image ? { src: s.image, alt: s.imageAlt } : null),
+                       { ratio: "4 / 5", tone: s.color, radius: "999px 999px 24px 24px", videoControls: true }
                      ) +
                    '</div>' +
                    '<div data-reveal>' +
@@ -270,7 +286,11 @@
 
     // Три слики, не шест: една голема лево преку двата реда, две помали десно.
     // Мрежа од шест еднакви плочки се читаше како каталог наместо портфолио.
-    var items = (S.gallery || []).slice(0, 3);
+    // `portfolioTeaser` (ако е зададено) дава свои три слики, различни од
+    // првите три во галеријата; инаку паѓа назад на почетокот на галеријата.
+    var items = (S.portfolioTeaser && S.portfolioTeaser.length)
+      ? S.portfolioTeaser
+      : (S.gallery || []).slice(0, 3);
     var ratios = ['4 / 5', '4 / 3', '4 / 3'];
     var html = '';
 

@@ -149,6 +149,12 @@
       window.SITE.reviews = v2.reviews;
     }
 
+    // Дополнителни слики за галеријата САМО во верзија 2 — се додаваат на
+    // крајот, верзија 1 си останува со истата низа од site-data.js.
+    if (Array.isArray(v2.galleryAppend) && Array.isArray(window.SITE.gallery)) {
+      window.SITE.gallery = window.SITE.gallery.concat(v2.galleryAppend);
+    }
+
     // Делумни измени по клуч: contact, about, tips...
     if (v2.overrides) {
       Object.keys(v2.overrides).forEach(function (k) {

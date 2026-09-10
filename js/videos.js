@@ -74,11 +74,12 @@
     var title = window.PB.esc(v.title || 'Видео');
 
     if (v.type === 'mp4') {
-      /* autoplay+muted+loop+playsinline: се пушта без клик и се повторува.
+      /* muted+loop+playsinline: се врти во круг без звук. Пуштањето го стартува
+         setupInlineVideos со .play().catch() (не преку `autoplay` атрибут — така
+         не останува неуловена AbortError кога прегледот паузира тивко видео).
          `controls` дава копче за цел екран; звукот се пали на цел екран
-         (setupInlineVideos) или преку самите контроли. `background:#000`
-         спречува блесок додека се вчитува првиот кадар. */
-      return '<video class="video-card__video" autoplay muted loop playsinline ' +
+         (setupInlineVideos) или преку самите контроли. */
+      return '<video class="video-card__video" muted loop playsinline ' +
                'controls preload="metadata" ' +
                (v.poster ? 'poster="' + window.PB.esc(v.poster) + '" ' : '') +
                'aria-label="' + title + '">' +
@@ -131,19 +132,21 @@
       v.addEventListener('webkitendfullscreen', function () { v.muted = true; });
     });
 
+    function safePlay(v) {
+      var p = v.play();
+      if (p && p.catch) p.catch(function () {});
+    }
+
     if ('IntersectionObserver' in window) {
       var io = new IntersectionObserver(function (entries) {
         entries.forEach(function (en) {
-          var v = en.target;
-          if (en.isIntersecting) {
-            var p = v.play();
-            if (p && p.catch) p.catch(function () {});
-          } else if (!fsNode()) {
-            v.pause();
-          }
+          if (en.isIntersecting) safePlay(en.target);
+          else if (!fsNode()) en.target.pause();
         });
       }, { threshold: 0.2 });
       Array.prototype.forEach.call(vids, function (v) { io.observe(v); });
+    } else {
+      Array.prototype.forEach.call(vids, safePlay);
     }
   }
 

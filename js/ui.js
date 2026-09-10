@@ -57,6 +57,21 @@
    */
   function slot(img, o) {
     o = o || {};
+    /* Видео во слот: истиот `.frame` и истиот однос на страни како кај слика,
+       па распоредот не се поместува. Се врти тивко во круг. `o.videoControls`
+       додава контроли (за цел екран/звук) — не се вклучува кога слотот седи
+       во кликлива картичка, инаку линкот ги прекрива копчињата. */
+    if (img && img.video) {
+      // Без `autoplay` атрибут — пуштањето го стартува js/sections.js со
+      // .play().catch(), за да не остане неуловена AbortError кога прегледот
+      // паузира тивко видео (пр. кога табот е во позадина).
+      return '<div class="frame" style="aspect-ratio:' + (o.ratio || '4 / 5') + ';' +
+             (o.radius ? 'border-radius:' + o.radius + ';' : '') + '">' +
+               '<video src="' + esc(img.video) + '" muted loop playsinline ' +
+               (o.videoControls ? 'controls ' : '') + 'preload="metadata" ' +
+               'aria-label="' + esc(img.alt || 'Видео') + '"></video>' +
+             '</div>';
+    }
     if (img && img.src) {
       return '<div class="frame" style="aspect-ratio:' + (o.ratio || '4 / 5') + ';' +
              (o.radius ? 'border-radius:' + o.radius + ';' : '') + '">' +

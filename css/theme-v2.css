@@ -82,32 +82,26 @@ html[data-version="2"] .card__media .frame {
 
 /* -----------------------------------------------------------------------------
    ВИДЕА
-   Почетна: едно видео-преглед (првото), се врти тивко.
-   Страницата „Видеа": сите пет вертикални, две во ред.
+   Почетна: тизерот прикажува четири видеа (првите четири).
+   Страницата „Видеа": петте вертикални — три горе едно до друго, две под нив.
    -------------------------------------------------------------------------- */
 @media (min-width: 960px) {
   html[data-version="2"] .videos__grid--vertical { grid-template-columns: repeat(4, 1fr); }
 }
 
-/* Тизерот на почетната: само првото видео, како преглед — центрирано, не
-   залепено во еден агол од мрежата од четири. Класата ја додава
-   data-v2-class во index.html; js/videos.js со data-limit="1" исцртува само
-   едно. */
-html[data-version="2"] .videos__grid--solo {
-  display: block;
-  max-width: 300px;
-  margin-inline: auto;
-}
-
 html[data-version="2"] .videos__grid--pairs {
   --video-ratio: 9 / 16;
-  max-width: 720px;
+  max-width: 960px;
   margin-inline: auto;
 }
 @media (min-width: 620px) {
   html[data-version="2"] .videos__grid--pairs { grid-template-columns: repeat(2, 1fr); }
   /* Верзија 1 го растегнува првото видео преку целата ширина. Тука не. */
   html[data-version="2"] .videos__grid--pairs > :first-child { grid-column: auto; }
+}
+@media (min-width: 900px) {
+  /* Три горе едно до друго, две под нив (5 видеа) — по барање на клиентот. */
+  html[data-version="2"] .videos__grid--pairs { grid-template-columns: repeat(3, 1fr); }
 }
 
 /* -----------------------------------------------------------------------------
