@@ -406,6 +406,25 @@
 .video-card video { width: 100%; aspect-ratio: var(--video-ratio); height: auto; display: block; }
 .video-card video { object-fit: cover; background: #000; }
 
+/* На цел екран видеото се гледа во својот природен формат (цело, со црни
+   ленти), не исечено како во мрежата. Важи и за видеата во .frame слотовите.
+   Одделни правила по префикс — неподдржан псевдо-класа во иста листа би го
+   поништила целото правило. */
+.video-card video:fullscreen,
+.frame > video:fullscreen {
+  object-fit: contain;
+  aspect-ratio: auto;
+  width: 100%;
+  height: 100%;
+}
+.video-card video:-webkit-full-screen,
+.frame > video:-webkit-full-screen {
+  object-fit: contain;
+  aspect-ratio: auto;
+  width: 100%;
+  height: 100%;
+}
+
 /* -----------------------------------------------------------------------------
    РЕЦЕНЗИИ
    Grid на десктоп. Scroll-snap ред на мобилен. Без автоматска ротација.
