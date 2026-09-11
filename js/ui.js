@@ -73,9 +73,12 @@
              '</div>';
     }
     if (img && img.src) {
+      // `objectPosition` е својство на сликата (не на слотот) — некои извори
+      // не се добро центрирани по вертикала во својот однос на страни.
       return '<div class="frame" style="aspect-ratio:' + (o.ratio || '4 / 5') + ';' +
              (o.radius ? 'border-radius:' + o.radius + ';' : '') + '">' +
                '<img src="' + esc(img.src) + '" alt="' + esc(img.alt || '') + '" ' +
+               (img.objectPosition ? 'style="object-position:' + esc(img.objectPosition) + '" ' : '') +
                'loading="lazy" decoding="async">' +
              '</div>';
     }

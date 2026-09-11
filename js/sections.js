@@ -392,7 +392,7 @@
         return '<figure class="photo-grid__item" data-reveal>' +
                  window.PB.slot(
                    p.src ? { src: p.src, alt: p.alt } : null,
-                   { ratio: '4 / 3', index: i, label: p.title || 'Слика доаѓа наскоро' }
+                   { ratio: '4 / 5', index: i, label: p.title || 'Слика доаѓа наскоро' }
                  ) +
                  '<figcaption class="photo-grid__caption">' +
                    window.PB.esc(p.title || '') +
