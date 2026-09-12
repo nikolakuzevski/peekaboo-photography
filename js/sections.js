@@ -316,6 +316,12 @@
         clearTimeout(t);
         t = setTimeout(function () { fitOneLine(nameEl, 28); }, 150);
       });
+      // Unbounded (насловниот фонт) сѐ уште не е вчитан во моментот на првото
+      // мерење — измерено со заменскиот фонт, па кога вистинскиот Unbounded
+      // ќе слета (обично пошироки букви) мерката веќе не важи. Премери пак.
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(function () { fitOneLine(nameEl, 28); });
+      }
     }
 
     /* Портретот што го преклопува името.
