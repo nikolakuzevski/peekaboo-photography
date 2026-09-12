@@ -940,7 +940,7 @@
 /* На тесни екрани -Xvw дава премалку преклоп (порт ретот излегува „далеку" од
    името) — посебна, порезна формула само за телефон. */
 @media (max-width: 640px) {
-  .about-hero__portrait--cutout { margin-top: clamp(-10rem, -18vw, -3.5rem); }
+  .about-hero__portrait--cutout { margin-top: clamp(-11rem, -24vw, -5rem); }
 }
 
 /* Eyebrow-от над огромното име — исто тврдо бело како и самото име. */
