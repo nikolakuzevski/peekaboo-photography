@@ -85,5 +85,110 @@
     return placeholder(o);
   }
 
-  window.PB = { esc: esc, placeholder: placeholder, slot: slot, PALETTE: PALETTE };
+  /* Заштита на фотографиите: без десен клик и без влечење врз сликите.
+     Не е непробојно (screenshot секогаш работи), но го запира случајното
+     „Зачувај слика". Логото и постерите на видеата не се опфатени. ui.js се
+     вчитува на сите 10 страници. Истиот список е и во components.css. */
+  var PHOTO = '.frame img, .hero-slider img, .lightbox__img, .about-hero__portrait img';
+  function blockPhoto(e) {
+    var t = e.target;
+    if (t && t.closest && t.closest(PHOTO)) e.preventDefault();
+  }
+  document.addEventListener('contextmenu', blockPhoto);
+  document.addEventListener('dragstart', blockPhoto);
+
+  /* Тон на водениот жиг: бел по правило, црн (истите 30%) кога делот од
+     фотографијата под него е светол, инаку белото лого се губи. Се мери
+     токму делот од сликата под жигот (со кропот од object-fit: cover и
+     object-position), по вчитување и по промена на прозорецот. Резултатот е
+     атрибутот data-wm-dark на <img>; изгледот го бираат components.css и
+     pages.css. Lightbox-от ова го повикува од js/gallery.js откако ќе го
+     постави жигот. */
+  var WM_LIGHT = 0.6;   // просечна осветленост (0–1) над која жигот станува темен
+  var wmCanvas = null;
+
+  // Каде седи жигот, во пиксели од горниот лев агол на <img>.
+  function markRect(img) {
+    var item = img.closest('.photo-grid__item');
+    if (item) {
+      var cap = item.querySelector('.photo-grid__caption');
+      var cb = cap && getComputedStyle(cap, '::before');
+      if (!cb || cb.content === 'none') return null;
+      var ir = img.getBoundingClientRect(), cr = cap.getBoundingClientRect();
+      var ch = parseFloat(cb.height);
+      return { x: cr.left + parseFloat(cb.left) - ir.left, y: cr.top - ch - ir.top,
+               w: parseFloat(cb.width), h: ch };
+    }
+    var stage = img.closest('.lightbox__stage');
+    if (stage) {
+      var m = stage.querySelector('.lightbox__mark');
+      if (!m || !m.offsetWidth) return null;
+      return { x: m.offsetLeft - img.offsetLeft, y: m.offsetTop - img.offsetTop,
+               w: m.offsetWidth, h: m.offsetHeight };
+    }
+    // .frame и .hero-slider: сликата ја пополнува целата рамка, па се мери
+    // по висината на сликата (во галеријата .frame е <span> со clientHeight 0).
+    var box = img.closest('.frame, .hero-slider');
+    var ca = box && getComputedStyle(box, '::after');
+    if (!ca || ca.content === 'none') return null;
+    var h = parseFloat(ca.height);
+    return { x: parseFloat(ca.left), y: img.clientHeight - parseFloat(ca.bottom) - h,
+             w: parseFloat(ca.width), h: h };
+  }
+
+  function posOffset(v, free) {
+    return /%$/.test(v) ? free * parseFloat(v) / 100 : (parseFloat(v) || 0);
+  }
+
+  function markTone(img) {
+    if (!img || !img.complete || !img.naturalWidth || !img.clientWidth) return;
+    var r = markRect(img);
+    if (!r || !r.w || !r.h) return;
+    var nw = img.naturalWidth, nh = img.naturalHeight;
+    var ew = img.clientWidth, eh = img.clientHeight;
+    var cs = getComputedStyle(img);
+    var sx = ew / nw, sy = eh / nh, ox = 0, oy = 0;
+    if (cs.objectFit === 'cover') {
+      sx = sy = Math.max(ew / nw, eh / nh);
+      var pos = cs.objectPosition.split(' ');
+      ox = posOffset(pos[0], ew - nw * sx);
+      oy = posOffset(pos[1] || '50%', eh - nh * sy);
+    }
+    var x = Math.max(0, (r.x - ox) / sx), y = Math.max(0, (r.y - oy) / sy);
+    var w = Math.min(nw, (r.x + r.w - ox) / sx) - x;
+    var h = Math.min(nh, (r.y + r.h - oy) / sy) - y;
+    if (w <= 0 || h <= 0) return;
+    try {
+      wmCanvas = wmCanvas || document.createElement('canvas');
+      wmCanvas.width = 24; wmCanvas.height = 16;
+      var ctx = wmCanvas.getContext('2d', { willReadFrequently: true });
+      ctx.drawImage(img, x, y, w, h, 0, 0, 24, 16);
+      var d = ctx.getImageData(0, 0, 24, 16).data, sum = 0;
+      for (var i = 0; i < d.length; i += 4) {
+        sum += 0.2126 * d[i] + 0.7152 * d[i + 1] + 0.0722 * d[i + 2];
+      }
+      img.toggleAttribute('data-wm-dark', sum / (d.length / 4) / 255 > WM_LIGHT);
+    } catch (e) { /* без canvas жигот едноставно останува бел */ }
+  }
+
+  function markAll() {
+    Array.prototype.forEach.call(document.querySelectorAll(PHOTO), function (img) {
+      if (!img.classList.contains('lightbox__img')) markTone(img);
+    });
+  }
+
+  // `load` не се шири нагоре, но се фаќа во capture фазата — важи и за
+  // сликите што sections.js и gallery.js ги вметнуваат подоцна.
+  document.addEventListener('load', function (e) {
+    var t = e.target;
+    if (t.tagName === 'IMG' && t.matches(PHOTO) && !t.classList.contains('lightbox__img')) markTone(t);
+  }, true);
+  window.addEventListener('load', markAll);
+  var wmTimer;
+  window.addEventListener('resize', function () {
+    clearTimeout(wmTimer);
+    wmTimer = setTimeout(markAll, 150);
+  });
+
+  window.PB = { esc: esc, placeholder: placeholder, slot: slot, PALETTE: PALETTE, markTone: markTone };
 })();

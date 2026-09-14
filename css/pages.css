@@ -726,6 +726,23 @@
   opacity: 0.85;
 }
 
+/* Натписот го покрива долниот раб на сликата, па водениот жиг од рамката
+   (components.css) би седел под текстот. Тука жигот оди веднаш над натписот,
+   порамнет со текстот. Истиот изглед како .frame::after. */
+.photo-grid__item .frame::after { content: none; }
+.photo-grid__caption::before {
+  content: '';
+  position: absolute;
+  left: var(--space-5);
+  bottom: 100%;
+  width: clamp(30px, 11%, 64px);
+  aspect-ratio: 416 / 264;
+  background: url('../images/watermark.png') no-repeat left bottom / contain;
+  opacity: 0.3;
+  pointer-events: none;
+}
+.photo-grid__item:has(img[data-wm-dark]) .photo-grid__caption::before { filter: brightness(0); }
+
 /* Носач за нумерираните блокови — му треба позиција за ротираниот збор. */
 .about-blocks-wrap { position: relative; }
 

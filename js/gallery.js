@@ -122,6 +122,7 @@
       var btnPrev = box.querySelector('[data-lb="prev"]');
       var btnNext = box.querySelector('[data-lb="next"]');
       var btnClose = box.querySelector('[data-lb="close"]');
+      var markEl = box.querySelector('.lightbox__mark');
 
       var idx = 0;
       var list = [];
@@ -162,7 +163,29 @@
         var many = list.length > 1;
         btnPrev.hidden = !many;
         btnNext.hidden = !many;
+        placeMark();
       }
+
+      /* Водениот жиг седи во долниот лев агол на САМАТА слика, не на сцената.
+         Сликата се смалува за да собере на екранот, па аголот се мери по секое
+         вчитување и промена на прозорецот. Истите мери како .frame::after во
+         components.css. Додека новата слика не се вчита, жигот е скриен. */
+      function placeMark() {
+        if (!markEl) return;
+        var w = imgEl.offsetWidth, h = imgEl.offsetHeight;
+        if (!imgEl.complete || !w || !h) { markEl.style.visibility = 'hidden'; return; }
+        var size = Math.min(64, Math.max(30, w * 0.11));
+        markEl.style.width = size + 'px';
+        markEl.style.left = (imgEl.offsetLeft + Math.max(14, w * 0.05)) + 'px';
+        markEl.style.top = (imgEl.offsetTop + h - Math.max(14, h * 0.05) - size * 264 / 416) + 'px';
+        markEl.style.visibility = '';
+        // Бел или темен жиг според тоа колку е светол аголот (js/ui.js).
+        if (window.PB && window.PB.markTone) window.PB.markTone(imgEl);
+      }
+      imgEl.addEventListener('load', placeMark);
+      window.addEventListener('resize', function () {
+        if (box.classList.contains('is-open')) placeMark();
+      });
 
       function step(delta) {
         if (list.length < 2) return;
