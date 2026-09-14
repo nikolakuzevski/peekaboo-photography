@@ -726,22 +726,27 @@
   opacity: 0.85;
 }
 
-/* Натписот го покрива долниот раб на сликата, па водениот жиг од рамката
-   (components.css) би седел под текстот. Тука жигот оди веднаш над натписот,
-   порамнет со текстот. Истиот изглед како .frame::after. */
+/* Натписот го покрива долниот раб на сликата, па жигот од рамката
+   (components.css) би останал под градиентот. Тука жигот го носи натписот,
+   во истиот агол (12px) и со истата големина, а текстот се крева нагоре
+   точно колку висината на жигот + 6px. Процентите во padding и во width
+   двата се мерат по ширината на картичката, па се совпаѓаат. Жигот тука е
+   секогаш бел: седи врз темниот градиент, не врз фотографијата. */
 .photo-grid__item .frame::after { content: none; }
+.photo-grid__caption {
+  padding-bottom: calc(18px + clamp(24px, 7%, 44px) * 264 / 416);
+}
 .photo-grid__caption::before {
   content: '';
   position: absolute;
-  left: var(--space-5);
-  bottom: 100%;
-  width: clamp(30px, 11%, 64px);
+  left: 12px;
+  bottom: 12px;
+  width: clamp(24px, 7%, 44px);
   aspect-ratio: 416 / 264;
   background: url('../images/watermark.png') no-repeat left bottom / contain;
   opacity: 0.3;
   pointer-events: none;
 }
-.photo-grid__item:has(img[data-wm-dark]) .photo-grid__caption::before { filter: brightness(0); }
 
 /* Носач за нумерираните блокови — му треба позиција за ротираниот збор. */
 .about-blocks-wrap { position: relative; }

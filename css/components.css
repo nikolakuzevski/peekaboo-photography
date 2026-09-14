@@ -372,7 +372,7 @@
    содржи, а фотографиите остануваат недопрени. Само рамки со <img>, не
    видеа ни placeholder-и. Односот 416 / 264 е големината на watermark.png.
    Lightbox-от го поставува својот жиг од js/gallery.js, по истите мери;
-   мрежата на „За мене" го носи над натписот (css/pages.css).
+   мрежата на „За мене" го носи на натписот, во истиот агол (css/pages.css).
    -------------------------------------------------------------------------- */
 .frame:has(> img)::after,
 .hero-slider::after,
@@ -380,16 +380,18 @@
   content: '';
   position: absolute;
   z-index: 2;
-  width: clamp(30px, 11%, 64px);
+  width: clamp(24px, 7%, 44px);
   aspect-ratio: 416 / 264;
   background: url('../images/watermark.png') no-repeat left bottom / contain;
   opacity: 0.3;
   pointer-events: none;
 }
+/* Фиксни 12px од аголот, не процент: со процент жигот на големите слики
+   бегаше далеку од аголот. 12px го чисти и најзаоблениот долен агол (36px). */
 .frame:has(> img)::after,
 .hero-slider::after {
-  left: max(14px, 5%);
-  bottom: max(14px, 5%);
+  left: 12px;
+  bottom: 12px;
 }
 /* Светол агол под жигот (js/ui.js го означува <img> со data-wm-dark): истото
    лого, црно наместо бело, за да не се изгуби врз бела позадина. */

@@ -109,16 +109,9 @@
 
   // Каде седи жигот, во пиксели од горниот лев агол на <img>.
   function markRect(img) {
-    var item = img.closest('.photo-grid__item');
-    if (item) {
-      var cap = item.querySelector('.photo-grid__caption');
-      var cb = cap && getComputedStyle(cap, '::before');
-      if (!cb || cb.content === 'none') return null;
-      var ir = img.getBoundingClientRect(), cr = cap.getBoundingClientRect();
-      var ch = parseFloat(cb.height);
-      return { x: cr.left + parseFloat(cb.left) - ir.left, y: cr.top - ch - ir.top,
-               w: parseFloat(cb.width), h: ch };
-    }
+    // Мрежата на „За мене": жигот седи врз темниот градиент на натписот,
+    // па останува бел (css/pages.css) и нема што да се мери.
+    if (img.closest('.photo-grid__item')) return null;
     var stage = img.closest('.lightbox__stage');
     if (stage) {
       var m = stage.querySelector('.lightbox__mark');

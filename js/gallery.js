@@ -174,10 +174,10 @@
         if (!markEl) return;
         var w = imgEl.offsetWidth, h = imgEl.offsetHeight;
         if (!imgEl.complete || !w || !h) { markEl.style.visibility = 'hidden'; return; }
-        var size = Math.min(64, Math.max(30, w * 0.11));
+        var size = Math.min(44, Math.max(24, w * 0.07));
         markEl.style.width = size + 'px';
-        markEl.style.left = (imgEl.offsetLeft + Math.max(14, w * 0.05)) + 'px';
-        markEl.style.top = (imgEl.offsetTop + h - Math.max(14, h * 0.05) - size * 264 / 416) + 'px';
+        markEl.style.left = (imgEl.offsetLeft + 12) + 'px';
+        markEl.style.top = (imgEl.offsetTop + h - 12 - size * 264 / 416) + 'px';
         markEl.style.visibility = '';
         // Бел или темен жиг според тоа колку е светол аголот (js/ui.js).
         if (window.PB && window.PB.markTone) window.PB.markTone(imgEl);
