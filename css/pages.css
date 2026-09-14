@@ -291,7 +291,10 @@
   overflow: hidden;
   position: relative;
 }
-.gallery__btn .frame { border-radius: inherit; }
+/* display: block: .frame тука е <span>. Како inline елемент околу блок-слика,
+   водениот жиг (.frame::after) немаше вистинска рамка за позиционирање и
+   завршуваше на средина долу. Сликата веќе е блок, па распоредот не се менува. */
+.gallery__btn .frame { display: block; border-radius: inherit; }
 .gallery__btn:hover img { transform: scale(1.03); }
 
 .gallery__veil {
