@@ -72,7 +72,7 @@ window.SITE = {
     instagramHandle: '@peekaboophotographyy',
 
     // Facebook — остави "" ако немаш, копчето ќе исчезне само
-    facebook: '',
+    facebook: 'https://www.facebook.com/peekaboophotography.mk',
 
     // Адреса на студиото
     address: 'ул. Мечкин Камен бр. 23, Ѓорче Петров, Скопје',

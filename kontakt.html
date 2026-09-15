@@ -4,21 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<!-- ВАЖНО: ТРГНИ ГО ОВА ПРЕД ОБЈАВУВАЊЕ
-     Сајтот сѐ уште има XXX податоци и примери наместо вистински рецензии.
-     Ако Google го индексира сега, тие лажни податоци ќе излегуваат во
-     пребарување за вистински бизнис. Кога сајтот е готов, избриши го
-     редот со name="robots" подолу. -->
-<meta name="robots" content="noindex, nofollow">
 <title>Контакт | Peek A&#39;Boo Photography</title>
-<meta name="description" content="Закажете термин за детска или семејна фотосесија во Скопје. Viber, телефон, Instagram DM или е-маил.">
+<meta name="description" content="Закажете термин за детска или семејна фотосесија во Скопје. Viber, телефон, Instagram, Facebook или е-маил.">
 <link rel="canonical" href="https://nikolakuzevski.github.io/peekaboo-photography/kontakt.html">
 
 <meta property="og:type" content="website">
 <meta property="og:locale" content="mk_MK">
 <meta property="og:site_name" content="Peek A&#39;Boo Photography">
 <meta property="og:title" content="Контакт — Peek A&#39;Boo Photography">
-<meta property="og:description" content="Закажете термин за детска или семејна фотосесија во Скопје. Viber, телефон, Instagram DM или е-маил.">
+<meta property="og:description" content="Закажете термин за детска или семејна фотосесија во Скопје. Viber, телефон, Instagram, Facebook или е-маил.">
 <meta property="og:image" content="images/logo.png">
 
 <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
@@ -139,17 +133,25 @@
             </span>
           </a>
 
-          <a class="method" data-color="yellow" data-link="instagram-link" target="_blank" rel="noopener">
-            <svg class="method__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                 stroke-width="1.7" aria-hidden="true">
-              <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/>
-              <circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/>
-            </svg>
-            <span>
-              <span class="method__label">Instagram DM</span>
+          <!-- Instagram и Facebook делат една картичка, за мрежата да остане
+               2 x 2. Картичката не е линк; линкови се двата реда во неа. -->
+          <div class="method method--social" data-color="yellow">
+            <span class="method__label">Instagram и Facebook</span>
+            <a class="method__row" href="#" data-link="instagram-link" target="_blank" rel="noopener">
+              <svg class="method__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="1.7" aria-hidden="true">
+                <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/>
+                <circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/>
+              </svg>
               <span class="method__value" data-field="instagramHandle">@peekaboophotographyy</span>
-            </span>
-          </a>
+            </a>
+            <a class="method__row" href="#" data-link="facebook-link" target="_blank" rel="noopener">
+              <svg class="method__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M13.5 21v-8h2.7l.4-3.1h-3.1V7.9c0-.9.25-1.5 1.55-1.5H16.7V3.6c-.29-.04-1.28-.12-2.43-.12-2.4 0-4.05 1.47-4.05 4.17V9.9H7.5V13h2.72v8z"/>
+              </svg>
+              <span class="method__value">peekaboophotography.mk</span>
+            </a>
+          </div>
 
           <a class="method" data-color="green" data-link="email-link">
             <svg class="method__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
