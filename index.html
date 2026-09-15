@@ -128,8 +128,10 @@
         </div>
       </div>
 
-      <div class="hero__panel" data-reveal>
-        <div class="hero__figure arch-reveal" data-reveal>
+      <!-- Без data-reveal и arch-reveal: сликата е тука веднаш при вчитување,
+           без влезна анимација (барање на клиентот, 2026-09-15). -->
+      <div class="hero__panel">
+        <div class="hero__figure">
           <!-- Слајдерот (или единечна слика) се исцртува тука од
                js/sections.js, renderHero() — читано од SITE.hero.images.
                Додека hero.images е празно, овој HTML placeholder останува
