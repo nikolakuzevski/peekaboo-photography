@@ -81,7 +81,7 @@
     if (bare) {
       mount.innerHTML =
         '<div class="hero-slider hero-slider--bare" role="button" tabindex="0" ' +
-          'aria-roledescription="слајдер" aria-label="Фотографии — притисни за следната">' +
+          'aria-roledescription="слајдер" aria-label="Фотографии, притисни за следната">' +
           slidesHtml +
         '</div>';
     } else {

@@ -137,7 +137,7 @@ button {
   line-height: 1.3;
 }
 /* Врз обоена позадина акцентната боја исчезнува — наследи ја бојата на бендот */
-.band .eyebrow { color: inherit; opacity: 0.85; }
+.band .eyebrow { color: inherit; }
 
 /* Ракописната верзија — само во hero-то на почетната. */
 .eyebrow--script {

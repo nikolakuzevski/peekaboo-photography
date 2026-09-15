@@ -65,6 +65,8 @@
   color: var(--ink);
   box-shadow: var(--shadow-sm);
 }
+/* Врз коралниот бенд виолетовиот текст паѓа на 3.1:1; ink е 4.9:1. */
+[data-color="coral"] .btn--outline { color: var(--tone-fg); }
 [data-color="purple"] .btn--outline,
 [data-color="blue"] .btn--outline { color: #fff; }
 

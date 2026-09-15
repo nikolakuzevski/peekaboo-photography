@@ -1,0 +1,8 @@
+# GitHub Pages го гради сајтот со Jekyll. Овие фајлови се работни белешки
+# и алатки, не дел од сајтот, па не смеат да се објавуваат на јавната адреса.
+# (HTML-страниците немаат front matter, па Jekyll ги копира непроменети.)
+exclude:
+  - HANDOFF.md
+  - README.md
+  - PROMPT-ZA-CLAUDE-DESIGN.md
+  - dev-server.ps1
