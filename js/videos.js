@@ -82,7 +82,7 @@
       // Без наслов под видеото — целото прозорче е самото видео (по барање
       // на клиентот). `title` останува само за aria-label.
       return '<video class="video-card__video" muted loop playsinline ' +
-               'controls preload="metadata" ' +
+               'controls controlslist="nodownload" preload="metadata" ' +
                (v.poster ? 'poster="' + window.PB.esc(v.poster) + '" ' : '') +
                'aria-label="' + title + '">' +
                '<source src="' + window.PB.esc(v.src) + '" type="video/mp4">' +
@@ -164,7 +164,7 @@
     }
 
     if (v.type === 'mp4') {
-      return '<video controls autoplay playsinline preload="metadata" ' +
+      return '<video controls controlslist="nodownload" autoplay playsinline preload="metadata" ' +
              (v.poster ? 'poster="' + window.PB.esc(v.poster) + '" ' : '') +
              'title="' + title + '">' +
                '<source src="' + window.PB.esc(v.src) + '" type="video/mp4">' +

@@ -68,7 +68,7 @@
       return '<div class="frame" style="aspect-ratio:' + (o.ratio || '4 / 5') + ';' +
              (o.radius ? 'border-radius:' + o.radius + ';' : '') + '">' +
                '<video src="' + esc(img.video) + '" muted loop playsinline ' +
-               (o.videoControls ? 'controls ' : '') + 'preload="metadata" ' +
+               (o.videoControls ? 'controls controlslist="nodownload" ' : '') + 'preload="metadata" ' +
                'aria-label="' + esc(img.alt || 'Видео') + '"></video>' +
              '</div>';
     }
@@ -90,9 +90,12 @@
      „Зачувај слика". Логото и постерите на видеата не се опфатени. ui.js се
      вчитува на сите 10 страници. Истиот список е и во components.css. */
   var PHOTO = '.frame img, .hero-slider img, .lightbox__img, .about-hero__portrait img';
+  // Истото и за сите видеа („Зачувај видео"). Копчето „Преземи" во
+  // контролите го крие controlslist="nodownload" (ui.js slot, videos.js).
+  var PROTECTED = PHOTO + ', video';
   function blockPhoto(e) {
     var t = e.target;
-    if (t && t.closest && t.closest(PHOTO)) e.preventDefault();
+    if (t && t.closest && t.closest(PROTECTED)) e.preventDefault();
   }
   document.addEventListener('contextmenu', blockPhoto);
   document.addEventListener('dragstart', blockPhoto);
