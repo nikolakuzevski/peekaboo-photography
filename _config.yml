@@ -6,3 +6,4 @@ exclude:
   - README.md
   - PROMPT-ZA-CLAUDE-DESIGN.md
   - dev-server.ps1
+  - build-package.ps1

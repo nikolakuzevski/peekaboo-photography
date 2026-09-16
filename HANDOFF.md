@@ -14,6 +14,42 @@
 - **Живо:** https://nikolakuzevski.github.io/peekaboo-photography/
 - **Репо:** https://github.com/nikolakuzevski/peekaboo-photography (јавно, `main`)
 - GitHub Pages се гради од `main`, коренот. Push значи живо за околу 1 минута.
+- **Селидба (одлука 2026-09-16):** сајтот оди на платен cPanel хостинг на
+  **peekaboophotography.mk** и се предава на Александра. GitHub Pages се
+  гаси и репото станува приватно дури кога новиот сајт ќе работи. Види
+  „Објавување на cPanel" подолу.
+
+## Објавување на cPanel
+
+**Пакет:** `powershell -ExecutionPolicy Bypass -File build-package.ps1`
+прави `_paket\peekaboophotography.mk\` и `_paket\peekaboophotography.mk.zip`
+(`_paket/` е во `.gitignore`). Пакува само фајлови што ги следи git, без
+белешки и GitHub-фајлови; ја менува GitHub адресата со доменот во HTML-от;
+прави `robots.txt`, `sitemap.xml` и `.htaccess`; и паѓа ако остане
+`github.io`. Zip-от е рачно пишуван со `/` во патеките (Compress-Archive во
+PowerShell 5.1 пишува `\` и Linux ги отпакува како `css\base.css`). Скриптата
+е намерно само ASCII (5.1 ја крши кирилицата без BOM). Во `_paket\` стои и
+`Предавање на вебсајтот.txt` за Александра; скриптата не го брише.
+
+**Прво објавување:**
+1. cPanel → File Manager → `public_html` → Upload на zip-от → Extract →
+   избриши го zip-от. „Show Hidden Files" за да се гледа `.htaccess`.
+2. SSL: cPanel → SSL/TLS Status → Run AutoSSL. Кога
+   `https://peekaboophotography.mk` ќе има катанец, во `.htaccess` отстрани
+   го `# ` пред 4-те `Rewrite` реда (HTTPS и без `www`). Порано не, инаку
+   сајтот не се вчитува.
+3. Проверка: сите страници, видеата на телефон, 404 (`/nema-takva`).
+4. Google Search Console на нејзината сметка, домен-сопственост, `sitemap.xml`.
+5. Дури тогаш: GitHub Pages исклучи, репото приватно.
+
+**Промени после објавување:** уреди локално → провери на localhost →
+commit и push (GitHub останува историја и резерва) → `build-package.ps1` →
+во cPanel качи само сменетите фајлови во истите папки (за поголема промена:
+целиот zip, со замена). Кешот: CSS/JS 1 час, слики и видеа 30 дена, па
+сменета фотографија добива **ново име**, не се заменува под истото.
+Можна автоматизација: GitHub Actions што при push ги качува сменетите
+фајлови преку FTP (FTP сметка од cPanel, лозинките ги внесува Никола како
+GitHub secrets). Уште не е поставена.
 
 **Статичен сајт: без build алатки, без сервер, без ниту една зависност.**
 Чист HTML, CSS и обичен JavaScript. На машинава **нема Node и нема Python**,

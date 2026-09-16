@@ -30,3 +30,6 @@ Sliki i videa/
 # Слики што сајтот не ги користи (стари hero/тизер/за-мене верзии), тргнати од репото 2026-09-15.
 # Остануваат локално, не се бришат.
 _neiskoristeni-sliki/
+
+# Upload package for the cPanel host (build-package.ps1), rebuilt on demand.
+_paket/
